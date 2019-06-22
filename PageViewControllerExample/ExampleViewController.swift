@@ -12,7 +12,7 @@ class ExampleViewController: PageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "ViewPager"
+        self.title = "KPageViewController"
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.isTranslucent = false
         self.dynamicWidthTab = true

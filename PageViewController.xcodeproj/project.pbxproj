@@ -15,18 +15,12 @@
 		3AFF276D22BE7808000E8C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AFF276C22BE7808000E8C60 /* Assets.xcassets */; };
 		3AFF277022BE7808000E8C60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AFF276E22BE7808000E8C60 /* LaunchScreen.storyboard */; };
 		3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
-		3AFF277C22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AFF277D22BE7886000E8C60 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */; };
-		3AFF277E22BE7886000E8C60 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */; };
 		3AFF277F22BE7886000E8C60 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277922BE7886000E8C60 /* SegmentedButton.swift */; };
-		3AFF278022BE7886000E8C60 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277922BE7886000E8C60 /* SegmentedButton.swift */; };
 		3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
-		3AFF278222BE7886000E8C60 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
-		3AFF278522BE7A1F000E8C60 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278422BE7A1F000E8C60 /* StringExtension.swift */; };
-		3AFF278722BE7A9B000E8C60 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278622BE7A9B000E8C60 /* UIColorExtension.swift */; };
-		3AFF278822BE7E05000E8C60 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278422BE7A1F000E8C60 /* StringExtension.swift */; };
-		3AFF278922BE7E07000E8C60 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278622BE7A9B000E8C60 /* UIColorExtension.swift */; };
 		3AFF278B22BE873A000E8C60 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278A22BE873A000E8C60 /* ExampleViewController.swift */; };
+		3AFF278C22BEA4A2000E8C60 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
+		3AFF278D22BEA4FA000E8C60 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277922BE7886000E8C60 /* SegmentedButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,8 +50,6 @@
 		3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
 		3AFF277922BE7886000E8C60 /* SegmentedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedButton.swift; sourceTree = "<group>"; };
 		3AFF277A22BE7886000E8C60 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
-		3AFF278422BE7A1F000E8C60 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
-		3AFF278622BE7A9B000E8C60 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		3AFF278A22BE873A000E8C60 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,7 +102,6 @@
 		3AFF274722BE776C000E8C60 /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
-				3AFF278322BE7A0A000E8C60 /* Extension */,
 				3AFF277522BE7886000E8C60 /* Component */,
 				3AFF274822BE776C000E8C60 /* PageViewController.h */,
 				3AFF274922BE776C000E8C60 /* Info.plist */,
@@ -157,15 +148,6 @@
 				3AFF277922BE7886000E8C60 /* SegmentedButton.swift */,
 			);
 			path = SegmentedControl;
-			sourceTree = "<group>";
-		};
-		3AFF278322BE7A0A000E8C60 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				3AFF278422BE7A1F000E8C60 /* StringExtension.swift */,
-				3AFF278622BE7A9B000E8C60 /* UIColorExtension.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,10 +291,8 @@
 			files = (
 				3AFF277F22BE7886000E8C60 /* SegmentedButton.swift in Sources */,
 				3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
-				3AFF278522BE7A1F000E8C60 /* StringExtension.swift in Sources */,
 				3AFF277D22BE7886000E8C60 /* SegmentedControlView.swift in Sources */,
 				3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */,
-				3AFF278722BE7A9B000E8C60 /* UIColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,14 +309,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AFF276822BE7806000E8C60 /* ViewController.swift in Sources */,
-				3AFF278822BE7E05000E8C60 /* StringExtension.swift in Sources */,
-				3AFF278022BE7886000E8C60 /* SegmentedButton.swift in Sources */,
-				3AFF278922BE7E07000E8C60 /* UIColorExtension.swift in Sources */,
-				3AFF277E22BE7886000E8C60 /* SegmentedControlView.swift in Sources */,
-				3AFF278222BE7886000E8C60 /* PageViewController.swift in Sources */,
+				3AFF278D22BEA4FA000E8C60 /* SegmentedButton.swift in Sources */,
 				3AFF276622BE7806000E8C60 /* AppDelegate.swift in Sources */,
-				3AFF277C22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
 				3AFF278B22BE873A000E8C60 /* ExampleViewController.swift in Sources */,
+				3AFF278C22BEA4A2000E8C60 /* PageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,12 +8,20 @@
 
 import UIKit
 
-protocol PageViewControllerDelegate: NSObjectProtocol {
+public protocol PageViewControllerDelegate: NSObjectProtocol {
     func getIndex() -> Int
     func setIndex(index: Int)
 }
 
-class PageViewController: UIViewController {
+extension String {
+    func getTextWidth(height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return boundingBox.width
+    }
+}
+
+public class PageViewController: UIViewController {
     
     var dynamicWidthTab: Bool = false
     private var X_BUFFER = 0
@@ -112,11 +120,11 @@ class PageViewController: UIViewController {
     
     var initialIndex: Int? = nil
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if !hasAppearedFlag, let _ = self.viewControllers, let _ = self.segmentedTitles { //will only setup UI with local data in willAppear
@@ -125,7 +133,7 @@ class PageViewController: UIViewController {
         hasAppearedFlag = true
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
@@ -365,7 +373,7 @@ class PageViewController: UIViewController {
         searchBar!.delegate?.searchBar!(searchBar!, textDidChange: "")
     }
     
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -384,15 +392,15 @@ class PageViewController: UIViewController {
 
 extension PageViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIScrollViewDelegate {
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isPageScrollingFlag = true
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.isPageScrollingFlag = false
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard buttons.count > currentPageIndex else {
             return
         }
@@ -463,21 +471,21 @@ extension PageViewController : UIPageViewControllerDelegate, UIPageViewControlle
     }
     
     //MARK:- PageViewController DataSource
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         var index = self.indexForViewController(viewController)
         index = index - 1
         
         return viewControllerAtIndex(index)
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         var index = self.indexForViewController(viewController)
         index = index + 1
         
         return viewControllerAtIndex(index)
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         if let vcs = self.viewControllers {
             for i in 0..<vcs.count {
                 if pendingViewControllers[0] == vcs[i] {
