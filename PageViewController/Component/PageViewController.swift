@@ -21,7 +21,7 @@ extension String {
     }
 }
 
-public class PageViewController: UIViewController {
+open class PageViewController: UIViewController {
     
     open var dynamicWidthTab: Bool = false
     private var X_BUFFER = 0
