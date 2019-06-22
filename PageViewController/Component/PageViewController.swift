@@ -23,7 +23,7 @@ extension String {
 
 public class PageViewController: UIViewController {
     
-    var dynamicWidthTab: Bool = false
+    open var dynamicWidthTab: Bool = false
     private var X_BUFFER = 0
     private let Y_BUFFER = 14
     private let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
@@ -73,7 +73,7 @@ public class PageViewController: UIViewController {
     var isContainSearchBar = false
     var shouldHaveSegment = true
     
-    var viewControllers: [UIViewController]? {
+    open var viewControllers: [UIViewController]? {
         didSet {
             if let strongViewControllers = viewControllers, strongViewControllers.count > 0 {
                 numOfPageCount = strongViewControllers.count
@@ -100,7 +100,7 @@ public class PageViewController: UIViewController {
         }
     }
     var isSegmentScrollable = false
-    var segmentedTitles: [String]? {
+    open var segmentedTitles: [String]? {
         didSet {
             if let segmentedTitles = segmentedTitles {
                 for (index, title) in segmentedTitles.enumerated() {
@@ -120,11 +120,11 @@ public class PageViewController: UIViewController {
     
     var initialIndex: Int? = nil
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if !hasAppearedFlag, let _ = self.viewControllers, let _ = self.segmentedTitles { //will only setup UI with local data in willAppear
@@ -133,7 +133,7 @@ public class PageViewController: UIViewController {
         hasAppearedFlag = true
     }
     
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
@@ -337,7 +337,7 @@ public class PageViewController: UIViewController {
         }
     }
     
-    func updateIndicator() {
+    private func updateIndicator() {
         if let titles = segmentedTitles {
             let title = titles[nextPageIndex]
             let width = title.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + SELECTOR_WIDTH_BUFFER
@@ -354,26 +354,26 @@ public class PageViewController: UIViewController {
         }
     }
     
-    func selectTab(atIndex index: Int) {
+    private func selectTab(atIndex index: Int) {
         if buttons.count > index {
             segmentButtonClicked(buttons[index])
         }
     }
     
-    func tab(atIndex index: Int, loadTitle title: String) {
+    private func tab(atIndex index: Int, loadTitle title: String) {
         if buttons.count > index {
             let button = buttons[index]
             button.setTitle(title, for: .normal)
         }
     }
     
-    func resetSearchBar(_ viewController: UIViewController) {
+    private func resetSearchBar(_ viewController: UIViewController) {
         searchBar!.text = ""
         searchBar!.resignFirstResponder()
         searchBar!.delegate?.searchBar!(searchBar!, textDidChange: "")
     }
     
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
