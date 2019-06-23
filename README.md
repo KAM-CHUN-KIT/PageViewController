@@ -1,5 +1,7 @@
 # KPageViewController
 
+<img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
+
 ## Example
 ```
 class ExampleViewController: PageViewController {
