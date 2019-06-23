@@ -1,6 +1,28 @@
 # KPageViewController
 
+An flexiable and easy to use view pager library for Swift.
+
+## Preview
 <img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
+
+## Setup
+You need to inherit the library from KPageViewController:
+```
+import KPageViewController
+
+class YourViewController: PageViewController {
+```
+
+Simply assign the segmented titles and view controllers:
+```
+self.segmentedTitles = titles
+self.viewControllers = vcs
+```
+
+Show it:
+```
+self.reveal()
+```
 
 ## Example
 ```
@@ -18,8 +40,8 @@ class ExampleViewController: PageViewController {
 ```
 
 ## Requirements
-iOS 9.0 or above
-Swift 5.0
+iOS 9.0 or above <br/>
+Support Swift 5.0
 
 ## Installation
 PageViewController is available through CocoaPods. To install it, simply add the following line to your Podfile:
