@@ -1,6 +1,6 @@
 # KPageViewController
 
-An flexiable and easy to use view pager library for Swift.
+A flexiable and easy to use view pager library for Swift.
 
 ## Preview
 <img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
