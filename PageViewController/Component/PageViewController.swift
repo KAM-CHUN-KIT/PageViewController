@@ -302,36 +302,30 @@ open class PageViewController: UIViewController {
             updateIndicator()
             
             if sender.tag > tempIdx {
-                for i in stride(from: (tempIdx+1), through: sender.tag, by: +1) {
-                    if let vcs = self.viewControllers, vcs.count > i {
-                        
-                        if isContainSearchBar {
-                            resetSearchBar(vcs[i])
-                        }
-                        
-                        pageViewController.setViewControllers([vcs[i]], direction: .forward, animated: false, completion: { (complete) in
-                            
-                            if complete {
-                                completion()
-                            }
-                        })
+                if let vcs = self.viewControllers, vcs.count > sender.tag {
+                    
+                    if isContainSearchBar {
+                        resetSearchBar(vcs[sender.tag])
                     }
+                    
+                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .forward, animated: false, completion: { (complete) in
+                        if complete {
+                            completion()
+                        }
+                    })
                 }
             } else if sender.tag < tempIdx {
-                for i in stride(from: (tempIdx-1), through: sender.tag, by: -1) {
-                    if let vcs = self.viewControllers, vcs.count > i {
-                        
-                        if isContainSearchBar {
-                            resetSearchBar(vcs[i])
-                        }
-                        
-                        pageViewController.setViewControllers([vcs[i]], direction: .reverse, animated: false, completion: { (complete) in
-                            
-                            if complete {
-                                completion()
-                            }
-                        })
+                if let vcs = self.viewControllers, vcs.count > sender.tag {
+                    
+                    if isContainSearchBar {
+                        resetSearchBar(vcs[sender.tag])
                     }
+                    
+                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .reverse, animated: false, completion: { (complete) in
+                        if complete {
+                            completion()
+                        }
+                    })
                 }
             }
         }
