@@ -11,15 +11,7 @@ class ExampleViewController: PageViewController {
         // Do any additional setup after loading the view.
         self.dynamicWidthTab = true
         self.segmentedTitles = ["Tab 1", "Tab 2", "Tab 3", "Tab 4", "Tab 5"]
-        
-        let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
-        var vcs: [UIViewController] = []
-        for color in colors {
-            let vc = UIViewController()
-            vc.view.backgroundColor = color
-            vcs.append(vc)
-        }
-        self.viewControllers = vcs
+        self.viewControllers = [UIViewController(), UIViewController(), UIViewController(), UIViewController(), UIViewController()]
         self.reveal()
     }
 }
