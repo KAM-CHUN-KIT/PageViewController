@@ -26,22 +26,31 @@ open class PageViewController: UIViewController {
         static let SEGMENT_HEIGHT: CGFloat = 45
         static let SEGMENT_Y: CGFloat = 0.0
         static let SEARCHBAR_HEIGHT: CGFloat = 44
+        static let SEGMENT_FONT_SIZE: CGFloat = 14
     }
     
-    open var dynamicWidthTab: Bool = false
-    private var X_BUFFER = 0
+    private var dynamicWidthTab: Bool = false // custom control to your segment button with fixed width or display the entire title
+    private var shouldHaveSegment = false // enable segment tab row
+    private var navigateToTabIndex = 0 /* bring to specific tab by assigning index */
+    private var viewControllers: [UIViewController]?
+    private var segmentedTitles: [String]?
+    private var buttons = [UIButton]()
+    private var selectedTitleColors: [UIColor]?
+    private var deSelectedTitleColor: UIColor?
+    private var indicatorColors: [UIColor]?
     
+    private var X_BUFFER = 0
     private var SELECTOR_WIDTH: CGFloat {
-        get {
+        get { // Do real time calculation of the indicator width.
             var btnWidth: CGFloat = 0.0
             var width: CGFloat = 0.0
             if let titles = segmentedTitles, titles.count > 0, buttons.count > currentPageIndex, titles.count > currentPageIndex, titles.count > nextPageIndex {
                 let title = titles[currentPageIndex]
                 let nextTitle = titles[nextPageIndex]
                 btnWidth = buttons[currentPageIndex].frame.size.width
-                let currentWidth = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
+                let currentWidth = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE))
                 width = currentWidth
-                let nextWidth = nextTitle.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
+                let nextWidth = nextTitle.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE))
                     
                 var diffWidth = nextWidth - currentWidth
                 if self.pageViewController.view.frame.size.width > self.pageScrollView.contentOffset.x { //scroll to left
@@ -61,31 +70,13 @@ open class PageViewController: UIViewController {
         }
     }
     
-    private var X_OFFSET = 0
-    private var FontSize: CGFloat = 14
-    
     private var pageViewController: UIPageViewController!
-    var pageScrollView: UIScrollView!
+    private var pageScrollView: UIScrollView!
     var isContainSearchBar = false
-    var shouldHaveSegment = true
-    
-    open var viewControllers: [UIViewController]? {
-        didSet {
-            if let strongViewControllers = viewControllers, strongViewControllers.count > 0 {
-                numOfPageCount = strongViewControllers.count
-                for (index, vc) in strongViewControllers.enumerated() {
-                    if let delegate = vc as? PageViewControllerDelegate {
-                        delegate.setIndex(index: index)
-                    }
-                }
-            }
-        }
-    }
-    private var buttons = [UIButton]()
     private var numOfPageCount = 0
-    var currentPageIndex = 0
+    private var currentPageIndex = 0
     private var nextPageIndex = 0
-    var navigateToTabIndex = 0 /* default 0, assign your index for redirection*/
+    
     private var isPageScrollingFlag = false
     private var hasAppearedFlag = false
     
@@ -95,29 +86,46 @@ open class PageViewController: UIViewController {
             self.segmentedControlView?.showsHorizontalScrollIndicator = false
         }
     }
-    var isSegmentScrollable = false
-    open var segmentedTitles: [String]? {
-        didSet {
-            if let segmentedTitles = segmentedTitles {
-                for (index, title) in segmentedTitles.enumerated() {
-                    if buttons.count > index {
-                        let button = buttons[index]
-                        button.setTitle(title, for: .normal)
-                    }
+    private var isSegmentScrollable = false
+    
+    private var selectionIndicator: UIView!
+    private var backgroundColor: UIColor?
+    private let IndicatorOffset: CGFloat = 5
+    var searchBar: UISearchBar?
+    private var initialIndex: Int? = nil
+    
+    init(vcs: [UIViewController]?, options: SegmentedControlOptions? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        if let vcs = vcs {
+            self.viewControllers = vcs
+            numOfPageCount = vcs.count
+            for (index, vc) in vcs.enumerated() {
+                if let delegate = vc as? PageViewControllerDelegate {
+                    delegate.setIndex(index: index)
                 }
             }
         }
+        
+        if let opt = options {
+            self.shouldHaveSegment = true
+            self.dynamicWidthTab = opt.isDynamicTabWidth
+            self.navigateToTabIndex = opt.navigateToTabIndex
+            let titles = opt.segmentedTitles
+            self.segmentedTitles = titles
+            for (index, title) in titles.enumerated() {
+                if buttons.count > index {
+                    let button = buttons[index]
+                    button.setTitle(title, for: .normal)
+                }
+            }
+            self.selectedTitleColors = opt.selectedTitleColors
+            self.deSelectedTitleColor = opt.deSelectedTitleColor
+            self.indicatorColors = opt.indicatorColors
+        }
     }
-    private var selectionIndicator: UIView!
-    var backgroundColor: UIColor?
-    private let IndicatorOffset: CGFloat = 5
-//    var hasRedDot = [Bool]()
-    var searchBar: UISearchBar?
     
-    var initialIndex: Int? = nil
-    
-    override open func viewDidLoad() {
-        super.viewDidLoad()
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override open func viewWillAppear(_ animated: Bool) {
@@ -127,10 +135,6 @@ open class PageViewController: UIViewController {
             self.reveal()
         }
         hasAppearedFlag = true
-    }
-    
-    override open func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
     
     open func reveal() {
@@ -165,7 +169,7 @@ open class PageViewController: UIViewController {
         
         var contentSizeWidth: CGFloat = 0.0
         for title in titles {
-            contentSizeWidth += title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
+            contentSizeWidth += title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE)) + FrameConstant.BUTTON_WIDTH_BUFFER
         }
         
         var remainAverageW:CGFloat = 0.0
@@ -182,7 +186,7 @@ open class PageViewController: UIViewController {
                 var buttonWidth: CGFloat = 0
                 
                 if isSegmentScrollable || dynamicWidthTab {
-                    buttonWidth = titles[i].getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
+                    buttonWidth = titles[i].getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE)) + FrameConstant.BUTTON_WIDTH_BUFFER
                 } else {
                     buttonWidth = ((self.view.frame.size.width) / CGFloat(numOfPageCount))
                 }
@@ -196,7 +200,7 @@ open class PageViewController: UIViewController {
                                                            y: 0,
                                                            width: buttonWidth,
                                                            height: FrameConstant.SEGMENT_HEIGHT))
-                button.fontSize = FontSize
+                button.fontSize = FrameConstant.SEGMENT_FONT_SIZE
                 
                 button.tag = i
                 let title = titles[i]
@@ -265,7 +269,7 @@ open class PageViewController: UIViewController {
         
         if let titles = segmentedTitles, let initialIndex = initialIndex {
             let title = titles[initialIndex]
-            width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
+            width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE)) + FrameConstant.SELECTOR_WIDTH_BUFFER
             x = buttons[initialIndex].center.x - width / 2
             
             currentPageIndex = initialIndex
@@ -328,7 +332,7 @@ open class PageViewController: UIViewController {
     private func updateIndicator() {
         if let titles = segmentedTitles {
             let title = titles[nextPageIndex]
-            let width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
+            let width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FrameConstant.SEGMENT_FONT_SIZE)) + FrameConstant.SELECTOR_WIDTH_BUFFER
             let xPos = self.buttons[nextPageIndex].center.x - width / 2
             
             UIView.animate(withDuration: 0.2, animations: {
