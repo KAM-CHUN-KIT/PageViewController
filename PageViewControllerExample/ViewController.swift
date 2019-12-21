@@ -16,6 +16,9 @@ class ViewController: UINavigationController {
         let options: SegmentedControlOptions = SegmentedControlOptions()
         options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
         options.segmentButtonFontSize = 14  //YOUR FONT SIZE
+        options.selectedTitleColor = .black // the button title color in selected / highlighed state
+        options.deSelectedTitleColor = .lightGray // the button title color in normal state
+        options.indicatorColor = .red // the indicator color
         
         let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
         var vcs: [UIViewController] = []
