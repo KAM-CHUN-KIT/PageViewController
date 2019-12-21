@@ -10,17 +10,20 @@ import UIKit
 
 class SegmentedButton: UIButton {
     
-    var fontSize: CGFloat = 14.0
+    var fontSize: CGFloat?
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         switch self.state {
         case UIControl.State():
-            self.titleLabel?.font = UIFont.systemFont(ofSize: fontSize)
-            break
+            if let size = fontSize {
+                self.titleLabel?.font = UIFont.systemFont(ofSize: size)
+            }
         case UIControl.State.selected:
-            self.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontSize+1)
+            if let size = fontSize {
+                self.titleLabel?.font = UIFont.boldSystemFont(ofSize: size+1)
+            }
             break
         default:
             break

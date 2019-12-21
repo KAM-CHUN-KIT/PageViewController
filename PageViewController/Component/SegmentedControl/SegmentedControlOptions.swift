@@ -9,22 +9,20 @@
 import UIKit
 
 open class SegmentedControlOptions {
-    var enableSegmentControl: Bool
     var segmentedTitles: [String]
-    var selectedTitleColors: [UIColor]
+    var selectedTitleColor: UIColor
     var deSelectedTitleColor: UIColor
-    var indicatorColors: [UIColor]
+    var indicatorColor: UIColor
     var hasRedDot: [Bool]?
     var segmentButtonFontSize: CGFloat
     var navigateToTabIndex: Int
     var isDynamicTabWidth: Bool
     
-    init(enableSegmentControl: Bool = true, segmentedTitles: [String]? = ["Red", "Black"], selectedTitleColors: [UIColor]? = [UIColor.red, UIColor.darkGray], deSelectedTitleColor: UIColor? = UIColor.lightGray, indicatorColors: [UIColor]? = [UIColor.red, UIColor.black], hasRedDot: [Bool]? = nil, segmentButtonFontSize: CGFloat? = 14, navigateToTabIndex: Int? = 0, isDynamicTabWidth: Bool = true) {
-        self.enableSegmentControl = enableSegmentControl
+    init(segmentedTitles: [String]? = ["Red", "Black"], selectedTitleColor: UIColor? = UIColor.black, deSelectedTitleColor: UIColor? = UIColor.lightGray, indicatorColor: UIColor? = UIColor.red, hasRedDot: [Bool]? = nil, segmentButtonFontSize: CGFloat? = 14, navigateToTabIndex: Int? = 0, isDynamicTabWidth: Bool = true) {
         self.segmentedTitles = segmentedTitles!
-        self.selectedTitleColors = selectedTitleColors!
+        self.selectedTitleColor = selectedTitleColor!
         self.deSelectedTitleColor = deSelectedTitleColor!
-        self.indicatorColors = indicatorColors!
+        self.indicatorColor = indicatorColor!
         self.hasRedDot = hasRedDot // nil means no red dot
         self.segmentButtonFontSize = segmentButtonFontSize ?? 14
         self.navigateToTabIndex = navigateToTabIndex ?? 0
