@@ -25,7 +25,6 @@ open class PageViewController: UIViewController {
         static let SELECTOR_HEIGHT: CGFloat = 2.0
         static let SEGMENT_HEIGHT: CGFloat = 45
         static let SEGMENT_Y: CGFloat = 0.0
-        static let SEARCHBAR_HEIGHT: CGFloat = 44
         static let SEGMENT_FONT_SIZE: CGFloat = 14
     }
     
@@ -72,7 +71,6 @@ open class PageViewController: UIViewController {
     
     private var pageViewController: UIPageViewController!
     private var pageScrollView: UIScrollView!
-    var isContainSearchBar = false
     private var numOfPageCount = 0
     private var currentPageIndex = 0
     private var nextPageIndex = 0
@@ -91,7 +89,6 @@ open class PageViewController: UIViewController {
     private var selectionIndicator: UIView!
     private var backgroundColor: UIColor?
     private let IndicatorOffset: CGFloat = 5
-    var searchBar: UISearchBar?
     private var initialIndex: Int? = nil
     
     init(vcs: [UIViewController]?, options: SegmentedControlOptions? = nil) {
@@ -140,10 +137,6 @@ open class PageViewController: UIViewController {
     open func reveal() {
         if shouldHaveSegment {
             setupSegmentButtons()
-        }
-        
-        if isContainSearchBar {
-            setupSearchBar()
         }
         
         setupPageViewController(initialIndex ?? 0)
@@ -223,11 +216,6 @@ open class PageViewController: UIViewController {
         buttons[initialIndex ?? 0].isSelected = true
     }
     
-    private func setupSearchBar() {
-        self.searchBar = UISearchBar(frame: CGRect(x: 0, y: segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y, width: view.frame.size.width, height: FrameConstant.SEARCHBAR_HEIGHT))
-        self.view.addSubview(searchBar!)
-    }
-    
     private func setupPageViewController(_ initialIndex: Int? = nil) {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         if let bgColor = self.backgroundColor {
@@ -244,21 +232,12 @@ open class PageViewController: UIViewController {
             }
         }
         
-        var startY = self.segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y + FrameConstant.SEGMENT_HEIGHT
-        
-        if let searchBar = self.searchBar {
-            startY = searchBar.frame.maxY
-        }
+        let startY = self.segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y + FrameConstant.SEGMENT_HEIGHT
         
         self.pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
         
         if let vcs = self.viewControllers, vcs.count > 0 {
             self.pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
-            
-            if isContainSearchBar {
-                resetSearchBar(vcs[initialIndex ?? 0])
-            }
-            
         }
         self.view.addSubview(pageViewController.view)
     }
@@ -301,11 +280,6 @@ open class PageViewController: UIViewController {
             
             if sender.tag > tempIdx {
                 if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    
-                    if isContainSearchBar {
-                        resetSearchBar(vcs[sender.tag])
-                    }
-                    
                     pageViewController.setViewControllers([vcs[sender.tag]], direction: .forward, animated: false, completion: { (complete) in
                         if complete {
                             completion()
@@ -314,11 +288,6 @@ open class PageViewController: UIViewController {
                 }
             } else if sender.tag < tempIdx {
                 if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    
-                    if isContainSearchBar {
-                        resetSearchBar(vcs[sender.tag])
-                    }
-                    
                     pageViewController.setViewControllers([vcs[sender.tag]], direction: .reverse, animated: false, completion: { (complete) in
                         if complete {
                             completion()
@@ -357,12 +326,6 @@ open class PageViewController: UIViewController {
             let button = buttons[index]
             button.setTitle(title, for: .normal)
         }
-    }
-    
-    private func resetSearchBar(_ viewController: UIViewController) {
-        searchBar!.text = ""
-        searchBar!.resignFirstResponder()
-        searchBar!.delegate?.searchBar!(searchBar!, textDidChange: "")
     }
 }
 
@@ -439,10 +402,6 @@ extension PageViewController: UIScrollViewDelegate {
                 
                 let currentButton = buttons[currentPageIndex]
                 currentButton.isSelected = true
-                
-                if let vc = viewControllers?[currentPageIndex], isContainSearchBar {
-                    resetSearchBar(vc)
-                }
             }
             
             animateIndicator(scrollView)
