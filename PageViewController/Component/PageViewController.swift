@@ -94,7 +94,7 @@ open class PageViewController: UIViewController {
     init(viewControllers: [UIViewController]?, options: SegmentedControlOptions? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        guard let vcs = viewControllers else {
+        guard let vcs = vcs else {
             print("**** No viewControllers was detected, please check your initializer****")
             return
         }
