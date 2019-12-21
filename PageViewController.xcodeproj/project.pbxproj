@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AFF274F22BE776C000E8C60 /* PageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AFF274522BE776C000E8C60 /* PageViewController.framework */; };
 		3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF275322BE776C000E8C60 /* PageViewControllerTests.swift */; };
 		3AFF275622BE776C000E8C60 /* PageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AFF274822BE776C000E8C60 /* PageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -313,6 +314,7 @@
 				3AFF276622BE7806000E8C60 /* AppDelegate.swift in Sources */,
 				3AFF278B22BE873A000E8C60 /* ExampleViewController.swift in Sources */,
 				3AFF278C22BEA4A2000E8C60 /* PageViewController.swift in Sources */,
+				3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
