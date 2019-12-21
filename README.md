@@ -6,37 +6,63 @@ A flexiable and easy to use view pager library for Swift.
 <img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
 
 ## Setup
-You need to inherit the library from KPageViewController:
+You may customize your segmented control by configuration:
 ```
-import KPageViewController
-
-class YourViewController: PageViewController {
-```
-
-Simply assign the segmented titles and view controllers:
-```
-self.segmentedTitles = titles
-self.viewControllers = vcs
+let options: SegmentedControlOptions = SegmentedControlOptions()
+options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
+options.segmentButtonFontSize = 14  //YOUR FONT SIZE
+options.selectedTitleColor = .black // the button title color in selected / highlighed state
+options.deSelectedTitleColor = .lightGray // the button title color in normal state
+options.indicatorColor = .red // the indicator color
 ```
 
-Show it:
+More configurable options:
 ```
-self.reveal()
+var segmentedTitles: [String] 
+var selectedTitleColor: UIColor
+var deSelectedTitleColor: UIColor
+var indicatorColor: UIColor
+var hasRedDot: [Bool]?
+var segmentButtonFontSize: CGFloat
+var navigateToTabIndex: Int
+var isDynamicTabWidth: Bool
+```
+
+Simply render the view controllers with background color:
+```
+let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
+var vcs: [UIViewController] = []
+for color in colors {
+    let vc = UIViewController()
+    vc.view.backgroundColor = color
+    vcs.append(vc)
+}
+```
+
+Initialize your PageViewController:
+```
+let pageVC = PageViewController(viewControllers: vcs, options: options)
 ```
 
 ## Example
 ```
-class ExampleViewController: PageViewController {
+let options: SegmentedControlOptions = SegmentedControlOptions()
+options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
+options.segmentButtonFontSize = 14  //YOUR FONT SIZE
+options.selectedTitleColor = .black // the button title color in selected / highlighed state
+options.deSelectedTitleColor = .lightGray // the button title color in normal state
+options.indicatorColor = .red // the indicator color
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.dynamicWidthTab = true
-        self.segmentedTitles = ["Tab 1", "Tab 2", "Tab 3", "Tab 4", "Tab 5"]
-        self.viewControllers = [UIViewController(), UIViewController(), UIViewController(), UIViewController(), UIViewController()]
-        self.reveal()
-    }
+let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
+var vcs: [UIViewController] = []
+for color in colors {
+    let vc = UIViewController()
+    vc.view.backgroundColor = color
+    vcs.append(vc)
 }
+
+let pageVC = PageViewController(viewControllers: vcs, options: options)
+self.pushViewController(pageVC, animated: false)
 ```
 
 ## Requirements
