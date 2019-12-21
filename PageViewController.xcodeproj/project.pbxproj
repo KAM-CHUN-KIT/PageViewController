@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
+		3AA470A123AE56EB00285070 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA4709F23AE56D500285070 /* SegmentedButton.swift */; };
 		3AFF274F22BE776C000E8C60 /* PageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AFF274522BE776C000E8C60 /* PageViewController.framework */; };
 		3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF275322BE776C000E8C60 /* PageViewControllerTests.swift */; };
 		3AFF275622BE776C000E8C60 /* PageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AFF274822BE776C000E8C60 /* PageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3AA4709F23AE56D500285070 /* SegmentedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedButton.swift; sourceTree = "<group>"; };
 		3AFF274522BE776C000E8C60 /* PageViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AFF274822BE776C000E8C60 /* PageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		3AFF274922BE776C000E8C60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */,
 				3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */,
+				3AA4709F23AE56D500285070 /* SegmentedButton.swift */,
 			);
 			path = SegmentedControl;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA470A123AE56EB00285070 /* SegmentedButton.swift in Sources */,
 				3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
 				3AFF277D22BE7886000E8C60 /* SegmentedControlView.swift in Sources */,
 				3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */,
