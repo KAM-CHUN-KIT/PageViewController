@@ -13,28 +13,24 @@ public protocol PageViewControllerDelegate: NSObjectProtocol {
     func setIndex(index: Int)
 }
 
-extension String {
-    func getTextWidth(height: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
-        return boundingBox.width
-    }
-}
-
 open class PageViewController: UIViewController {
+    
+    private struct FrameConstant {
+        static let Y_BUFFER = 14
+        static let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
+        static let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
+        static let BOUNCE_BUFFER = 10
+        static let ANIMATION_SPEED: CGFloat = 0.2
+        static let SELECTOR_Y_BUFFER: CGFloat = 36
+        static let SELECTOR_HEIGHT: CGFloat = 2.0
+        static let SEGMENT_HEIGHT: CGFloat = 45
+        static let SEGMENT_Y: CGFloat = 0.0
+        static let SEARCHBAR_HEIGHT: CGFloat = 44
+    }
     
     open var dynamicWidthTab: Bool = false
     private var X_BUFFER = 0
-    private let Y_BUFFER = 14
-    private let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
-    private let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
-    let SEGMENT_HEIGHT: CGFloat = 45
-    let SEGMENT_Y: CGFloat = 0.0
-    let SEARCHBAR_HEIGHT: CGFloat = 44
-    private let BOUNCE_BUFFER = 10
-    private let ANIMATION_SPEED: CGFloat = 0.2
-    private let SELECTOR_Y_BUFFER: CGFloat = 36
-    private let SELECTOR_HEIGHT: CGFloat = 2.0
+    
     private var SELECTOR_WIDTH: CGFloat {
         get {
             var btnWidth: CGFloat = 0.0
@@ -43,9 +39,9 @@ open class PageViewController: UIViewController {
                 let title = titles[currentPageIndex]
                 let nextTitle = titles[nextPageIndex]
                 btnWidth = buttons[currentPageIndex].frame.size.width
-                let currentWidth = title.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
+                let currentWidth = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
                 width = currentWidth
-                let nextWidth = nextTitle.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
+                let nextWidth = nextTitle.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize))
                     
                 var diffWidth = nextWidth - currentWidth
                 if self.pageViewController.view.frame.size.width > self.pageScrollView.contentOffset.x { //scroll to left
@@ -59,7 +55,7 @@ open class PageViewController: UIViewController {
                 }
                 width += diffWidth
             }
-            width += SELECTOR_WIDTH_BUFFER
+            width += FrameConstant.SELECTOR_WIDTH_BUFFER
             X_BUFFER = Int((btnWidth - width)/2)
             return width
         }
@@ -161,7 +157,7 @@ open class PageViewController: UIViewController {
     }
     
     private func setupSegmentButtons() {
-        self.segmentedControlView = UIScrollView(frame: CGRect(x: 0, y: SEGMENT_Y, width: self.view.frame.size.width, height: SEGMENT_HEIGHT))
+        self.segmentedControlView = UIScrollView(frame: CGRect(x: 0, y: FrameConstant.SEGMENT_Y, width: self.view.frame.size.width, height: FrameConstant.SEGMENT_HEIGHT))
         
         guard let titles = self.segmentedTitles, let segmentedControl = self.segmentedControlView else {
             return
@@ -169,13 +165,13 @@ open class PageViewController: UIViewController {
         
         var contentSizeWidth: CGFloat = 0.0
         for title in titles {
-            contentSizeWidth += title.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + BUTTON_WIDTH_BUFFER
+            contentSizeWidth += title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
         }
         
         var remainAverageW:CGFloat = 0.0
         if contentSizeWidth > segmentedControl.bounds.width {
             self.isSegmentScrollable = true
-            segmentedControl.contentSize = CGSize(width: contentSizeWidth, height: SEGMENT_HEIGHT)
+            segmentedControl.contentSize = CGSize(width: contentSizeWidth, height: FrameConstant.SEGMENT_HEIGHT)
         } else if dynamicWidthTab {
             let remainWidth = segmentedControl.bounds.width - contentSizeWidth
             remainAverageW = remainWidth / CGFloat(titles.count)
@@ -186,7 +182,7 @@ open class PageViewController: UIViewController {
                 var buttonWidth: CGFloat = 0
                 
                 if isSegmentScrollable || dynamicWidthTab {
-                    buttonWidth = titles[i].getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + BUTTON_WIDTH_BUFFER
+                    buttonWidth = titles[i].getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
                 } else {
                     buttonWidth = ((self.view.frame.size.width) / CGFloat(numOfPageCount))
                 }
@@ -199,7 +195,7 @@ open class PageViewController: UIViewController {
                 let button = SegmentedButton(frame: CGRect(x: previousButtonMaxX,
                                                            y: 0,
                                                            width: buttonWidth,
-                                                           height: SEGMENT_HEIGHT))
+                                                           height: FrameConstant.SEGMENT_HEIGHT))
                 button.fontSize = FontSize
                 
                 button.tag = i
@@ -217,8 +213,6 @@ open class PageViewController: UIViewController {
                 buttons.append(button)
                 segmentedControl.addSubview(button)
             }
-            
-            reloadSegmentState()
         }
         
         self.view.addSubview(self.segmentedControlView!)
@@ -226,7 +220,7 @@ open class PageViewController: UIViewController {
     }
     
     private func setupSearchBar() {
-        self.searchBar = UISearchBar(frame: CGRect(x: 0, y: segmentedControlView?.frame.maxY ?? SEGMENT_Y, width: view.frame.size.width, height: SEARCHBAR_HEIGHT))
+        self.searchBar = UISearchBar(frame: CGRect(x: 0, y: segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y, width: view.frame.size.width, height: FrameConstant.SEARCHBAR_HEIGHT))
         self.view.addSubview(searchBar!)
     }
     
@@ -246,7 +240,7 @@ open class PageViewController: UIViewController {
             }
         }
         
-        var startY = self.segmentedControlView?.frame.maxY ?? SEGMENT_Y + SEGMENT_HEIGHT
+        var startY = self.segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y + FrameConstant.SEGMENT_HEIGHT
         
         if let searchBar = self.searchBar {
             startY = searchBar.frame.maxY
@@ -271,14 +265,14 @@ open class PageViewController: UIViewController {
         
         if let titles = segmentedTitles, let initialIndex = initialIndex {
             let title = titles[initialIndex]
-            width = title.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + SELECTOR_WIDTH_BUFFER
+            width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
             x = buttons[initialIndex].center.x - width / 2
             
             currentPageIndex = initialIndex
         }
         
-        selectionIndicator = UIView(frame: CGRect(x: x, y: SELECTOR_Y_BUFFER, width: width, height: SELECTOR_HEIGHT))
-        selectionIndicator.layer.cornerRadius = SELECTOR_HEIGHT/2
+        selectionIndicator = UIView(frame: CGRect(x: x, y: FrameConstant.SELECTOR_Y_BUFFER, width: width, height: FrameConstant.SELECTOR_HEIGHT))
+        selectionIndicator.layer.cornerRadius = FrameConstant.SELECTOR_HEIGHT/2
         selectionIndicator.backgroundColor = UIColor.red
         segmentedControlView?.addSubview(selectionIndicator)
     }
@@ -334,7 +328,7 @@ open class PageViewController: UIViewController {
     private func updateIndicator() {
         if let titles = segmentedTitles {
             let title = titles[nextPageIndex]
-            let width = title.getTextWidth(height: SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + SELECTOR_WIDTH_BUFFER
+            let width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: FontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
             let xPos = self.buttons[nextPageIndex].center.x - width / 2
             
             UIView.animate(withDuration: 0.2, animations: {
@@ -366,26 +360,58 @@ open class PageViewController: UIViewController {
         searchBar!.resignFirstResponder()
         searchBar!.delegate?.searchBar!(searchBar!, textDidChange: "")
     }
-    
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+}
+
+//MARK:- PageViewController Delegate
+extension PageViewController : UIPageViewControllerDelegate {
+    func indexForViewController(_ viewController : UIViewController) -> Int {
+        if let index = self.viewControllers?.firstIndex(of: viewController) {
+            return index
+        }
+        
+        return 0
     }
     
-    func reloadSegmentState() { //for reddot only
-//        for (index, button) in buttons.enumerated() {
-//            if let shouldShowRedDot = hasRedDot.get(index), shouldShowRedDot == true {
-//                button.viewWithTag(RED_DOT_TAG)?.isHidden = false
-//            }
-//            else {
-//                button.viewWithTag(RED_DOT_TAG)?.isHidden = true
-//            }
-//        }
+    func viewControllerAtIndex(_ index : Int) -> UIViewController? {
+        if let vcs = viewControllers {
+            if index >= vcs.count || index < 0 {
+                return nil
+            }
+            return vcs[index]
+        }
+        return nil
     }
 }
 
-extension PageViewController : UIPageViewControllerDelegate, UIPageViewControllerDataSource, UIScrollViewDelegate {
+//MARK:- PageViewController DataSource
+extension PageViewController: UIPageViewControllerDataSource {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        var index = self.indexForViewController(viewController)
+        index = index - 1
+        
+        return viewControllerAtIndex(index)
+    }
     
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        var index = self.indexForViewController(viewController)
+        index = index + 1
+        
+        return viewControllerAtIndex(index)
+    }
+    
+    public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        if let vcs = self.viewControllers {
+            for i in 0..<vcs.count {
+                if pendingViewControllers[0] == vcs[i] {
+                    nextPageIndex = i
+                    break
+                }
+            }
+        }
+    }
+}
+
+extension PageViewController: UIScrollViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isPageScrollingFlag = true
     }
@@ -463,49 +489,12 @@ extension PageViewController : UIPageViewControllerDelegate, UIPageViewControlle
             }
         }
     }
-    
-    //MARK:- PageViewController DataSource
-    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        var index = self.indexForViewController(viewController)
-        index = index - 1
-        
-        return viewControllerAtIndex(index)
-    }
-    
-    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        var index = self.indexForViewController(viewController)
-        index = index + 1
-        
-        return viewControllerAtIndex(index)
-    }
-    
-    public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        if let vcs = self.viewControllers {
-            for i in 0..<vcs.count {
-                if pendingViewControllers[0] == vcs[i] {
-                    nextPageIndex = i
-                    break
-                }
-            }
-        }
-    }
-    
-    //MARK:- PageViewController Delegate
-    func indexForViewController(_ viewController : UIViewController) -> Int {
-        if let index = self.viewControllers?.firstIndex(of: viewController) {
-            return index
-        }
-        
-        return 0
-    }
-    
-    func viewControllerAtIndex(_ index : Int) -> UIViewController? {
-        if let vcs = viewControllers{
-            if index >= vcs.count || index < 0 {
-                return nil
-            }
-            return vcs[index]
-        }
-        return nil
+}
+
+extension String {
+    func getTextWidth(height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return boundingBox.width
     }
 }
