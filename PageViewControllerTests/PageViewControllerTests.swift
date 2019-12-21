@@ -19,16 +19,37 @@ class PageViewControllerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testIndexForViewController() {
+        let options: SegmentedControlOptions = SegmentedControlOptions()
+        options.segmentedTitles = ["1", "2", "3", "4", "5"]
+        
+        let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
+        var vcs: [UIViewController] = []
+        for color in colors {
+            let vc = UIViewController()
+            vc.view.backgroundColor = color
+            vcs.append(vc)
         }
+        let testIndex = 2
+        let viewControllerToBeTested: UIViewController = vcs[testIndex]
+        let pageVC = PageViewController(viewControllers: vcs, options: options)
+        XCTAssert(pageVC.indexForViewController(viewControllerToBeTested) == testIndex)
     }
-
+    
+    func testViewControllerAtIndex() {
+        let options: SegmentedControlOptions = SegmentedControlOptions()
+        options.segmentedTitles = ["1", "2", "3", "4", "5"]
+        
+        let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
+        var vcs: [UIViewController] = []
+        for color in colors {
+            let vc = UIViewController()
+            vc.view.backgroundColor = color
+            vcs.append(vc)
+        }
+        let testIndex = 3
+        let viewControllerToBeTest: UIViewController = vcs[testIndex]
+        let pageVC = PageViewController(viewControllers: vcs, options: options)
+        XCTAssert(pageVC.viewControllerAtIndex(testIndex) == viewControllerToBeTest)
+    }
 }

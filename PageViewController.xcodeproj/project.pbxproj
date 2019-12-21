@@ -10,6 +10,9 @@
 		3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AA470A123AE56EB00285070 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA4709F23AE56D500285070 /* SegmentedButton.swift */; };
 		3AA470A323AE574500285070 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA4709F23AE56D500285070 /* SegmentedButton.swift */; };
+		3AA470A423AE647D00285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
+		3AA470A523AE648300285070 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
+		3AA470A623AE649000285070 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA4709F23AE56D500285070 /* SegmentedButton.swift */; };
 		3AFF274F22BE776C000E8C60 /* PageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AFF274522BE776C000E8C60 /* PageViewController.framework */; };
 		3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF275322BE776C000E8C60 /* PageViewControllerTests.swift */; };
 		3AFF275622BE776C000E8C60 /* PageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AFF274822BE776C000E8C60 /* PageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -297,7 +300,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA470A623AE649000285070 /* SegmentedButton.swift in Sources */,
+				3AA470A523AE648300285070 /* PageViewController.swift in Sources */,
 				3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */,
+				3AA470A423AE647D00285070 /* SegmentedControlOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
