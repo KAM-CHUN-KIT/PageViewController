@@ -18,7 +18,6 @@
 		3AFF276D22BE7808000E8C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AFF276C22BE7808000E8C60 /* Assets.xcassets */; };
 		3AFF277022BE7808000E8C60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AFF276E22BE7808000E8C60 /* LaunchScreen.storyboard */; };
 		3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
-		3AFF277D22BE7886000E8C60 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */; };
 		3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
 		3AFF278B22BE873A000E8C60 /* ExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF278A22BE873A000E8C60 /* ExampleViewController.swift */; };
 		3AFF278C22BEA4A2000E8C60 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
@@ -49,7 +48,6 @@
 		3AFF276F22BE7808000E8C60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AFF277122BE7808000E8C60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlOptions.swift; sourceTree = "<group>"; };
-		3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
 		3AFF277A22BE7886000E8C60 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		3AFF278A22BE873A000E8C60 /* ExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */,
-				3AFF277822BE7886000E8C60 /* SegmentedControlView.swift */,
 				3AA4709F23AE56D500285070 /* SegmentedButton.swift */,
 			);
 			path = SegmentedControl;
@@ -292,7 +289,6 @@
 			files = (
 				3AA470A123AE56EB00285070 /* SegmentedButton.swift in Sources */,
 				3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
-				3AFF277D22BE7886000E8C60 /* SegmentedControlView.swift in Sources */,
 				3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
