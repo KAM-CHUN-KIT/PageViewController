@@ -3,7 +3,7 @@
 //  merchant-ios
 //
 //  Created by Kam on 27/11/2017.
-//  Copyright © 2017 WWE & CO. All rights reserved.
+//  Copyright © 2017 Kam. All rights reserved.
 //
 
 import UIKit

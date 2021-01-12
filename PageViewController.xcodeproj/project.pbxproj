@@ -13,6 +13,7 @@
 		3AA470A423AE647D00285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AA470A523AE648300285070 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
 		3AA470A623AE649000285070 /* SegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA4709F23AE56D500285070 /* SegmentedButton.swift */; };
+		3AEAF80225AE104100245306 /* PageViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AEAF80125AE104100245306 /* PageViewControllerDelegate.swift */; };
 		3AFF274F22BE776C000E8C60 /* PageViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AFF274522BE776C000E8C60 /* PageViewController.framework */; };
 		3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF275322BE776C000E8C60 /* PageViewControllerTests.swift */; };
 		3AFF275622BE776C000E8C60 /* PageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AFF274822BE776C000E8C60 /* PageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		3AA4709F23AE56D500285070 /* SegmentedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedButton.swift; sourceTree = "<group>"; };
+		3AEAF80125AE104100245306 /* PageViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewControllerDelegate.swift; sourceTree = "<group>"; };
 		3AFF274522BE776C000E8C60 /* PageViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AFF274822BE776C000E8C60 /* PageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		3AFF274922BE776C000E8C60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3AEAF80025AE0EF100245306 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				3AEAF80125AE104100245306 /* PageViewControllerDelegate.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		3AFF273B22BE776C000E8C60 = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +114,7 @@
 		3AFF274722BE776C000E8C60 /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3AEAF80025AE0EF100245306 /* Protocol */,
 				3AFF277522BE7886000E8C60 /* Component */,
 				3AFF274822BE776C000E8C60 /* PageViewController.h */,
 				3AFF274922BE776C000E8C60 /* Info.plist */,
@@ -290,6 +301,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AEAF80225AE104100245306 /* PageViewControllerDelegate.swift in Sources */,
 				3AA470A123AE56EB00285070 /* SegmentedButton.swift in Sources */,
 				3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
 				3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */,

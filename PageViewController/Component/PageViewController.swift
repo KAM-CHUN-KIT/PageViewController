@@ -198,11 +198,10 @@ open class PageViewController: UIViewController {
                 }
                 
                 let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
-                let button = SegmentedButton(frame: CGRect(x: previousButtonMaxX,
+                let button = UIButton(frame: CGRect(x: previousButtonMaxX,
                                                            y: 0,
                                                            width: buttonWidth,
                                                            height: FrameConstant.SEGMENT_HEIGHT))
-                button.fontSize = segmentedFontSize
                 
                 button.tag = i
                 let title = titles[i]

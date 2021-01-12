@@ -3,7 +3,7 @@
 //  NavigationItem
 //
 //  Created by Kam on 11/5/2017.
-//  Copyright © 2017 MyMM. All rights reserved.
+//  Copyright © 2017 Kam. All rights reserved.
 //
 
 import UIKit
@@ -18,7 +18,14 @@ open class SegmentedControlOptions {
     var navigateToTabIndex: Int
     var isDynamicTabWidth: Bool
     
-    init(segmentedTitles: [String]? = ["Red", "Black"], selectedTitleColor: UIColor? = UIColor.black, deSelectedTitleColor: UIColor? = UIColor.lightGray, indicatorColor: UIColor? = UIColor.red, hasRedDot: [Bool]? = nil, segmentButtonFontSize: CGFloat? = 14, navigateToTabIndex: Int? = 0, isDynamicTabWidth: Bool = true) {
+    init(segmentedTitles: [String]? = ["Red", "Black"],
+         selectedTitleColor: UIColor? = UIColor.black,
+         deSelectedTitleColor: UIColor? = UIColor.lightGray,
+         indicatorColor: UIColor? = UIColor.red,
+         hasRedDot: [Bool]? = nil,
+         segmentButtonFontSize: CGFloat? = 14,
+         navigateToTabIndex: Int? = 0,
+         isDynamicTabWidth: Bool = true) {
         self.segmentedTitles = segmentedTitles!
         self.selectedTitleColor = selectedTitleColor!
         self.deSelectedTitleColor = deSelectedTitleColor!
