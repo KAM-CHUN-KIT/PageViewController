@@ -90,6 +90,7 @@ open class PageViewController: UIViewController {
     private var backgroundColor: UIColor?
     private let IndicatorOffset: CGFloat = 5
     private var initialIndex: Int? = nil
+    private var initialOffset: CGPoint = .zero
     
     init(viewControllers: [UIViewController]?, options: SegmentedControlOptions? = nil) {
         super.init(nibName: nil, bundle: nil)
@@ -202,7 +203,7 @@ open class PageViewController: UIViewController {
                                                            y: 0,
                                                            width: buttonWidth,
                                                            height: FrameConstant.SEGMENT_HEIGHT))
-                
+                button.titleLabel?.font = UIFont.boldSystemFont(ofSize: segmentedFontSize)
                 button.tag = i
                 let title = titles[i]
                 button.setTitle(title, for: .normal)
@@ -389,6 +390,7 @@ extension PageViewController: UIPageViewControllerDataSource {
 extension PageViewController: UIScrollViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isPageScrollingFlag = true
+        self.initialOffset = scrollView.contentOffset
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -431,11 +433,23 @@ extension PageViewController: UIScrollViewDelegate {
     }
     
     private func animateIndicator(_ scrollView: UIScrollView) {
+        guard scrollView.contentOffset.x >= 0 && scrollView.contentOffset.x <= self.view.frame.size.width*2 else { return } //avoid scrolling too fast
         let xFromCenter: Int = Int(self.view.frame.size.width - scrollView.contentOffset.x)
         let width = SELECTOR_WIDTH
         
         let xCoor: CGFloat = CGFloat(X_BUFFER) + buttons[currentPageIndex].frame.origin.x
         let ratio: CGFloat = ((buttons[currentPageIndex].frame.size.width + buttons[nextPageIndex].frame.size.width) / 2) / self.view.frame.size.width
+        
+        let percentage: CGFloat
+        if initialOffset.x > scrollView.contentOffset.x {
+            percentage = (initialOffset.x - scrollView.contentOffset.x)/self.view.frame.width
+        }else {
+            percentage = (scrollView.contentOffset.x - initialOffset.x)/self.view.frame.width
+        }
+        
+        print(percentage)
+        buttons[currentPageIndex].titleLabel?.textColor = UIColor.addColor(UIColor.multiplyColor(selectedTitleColor!, by: (1-percentage)), with: UIColor.multiplyColor(deSelectedTitleColor!, by: percentage))
+        buttons[nextPageIndex].titleLabel?.textColor = UIColor.addColor(UIColor.multiplyColor(selectedTitleColor!, by: percentage), with: UIColor.multiplyColor(deSelectedTitleColor!, by: (1-percentage)))
         
         self.selectionIndicator.frame = CGRect(
             x: xCoor - CGFloat(xFromCenter) * ratio,
@@ -467,5 +481,24 @@ extension String {
         let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
         let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         return boundingBox.width
+    }
+}
+
+extension UIColor {
+    static func addColor(_ color1: UIColor, with color2: UIColor) -> UIColor {
+        var (r1, g1, b1, a1) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
+        var (r2, g2, b2, a2) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
+
+        color1.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        color2.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+
+        // add the components, but don't let them go above 1.0
+        return UIColor(red: min(r1 + r2, 1), green: min(g1 + g2, 1), blue: min(b1 + b2, 1), alpha: (a1 + a2) / 2)
+    }
+    
+    static func multiplyColor(_ color: UIColor, by multiplier: CGFloat) -> UIColor {
+        var (r, g, b, a) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        return UIColor(red: r * multiplier, green: g * multiplier, blue: b * multiplier, alpha: a)
     }
 }
