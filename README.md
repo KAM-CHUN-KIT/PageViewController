@@ -8,7 +8,7 @@ A flexiable and easy to use view pager library for Swift.
 ## Setup
 You may customize your segmented control by configuration:
 ```
-let options: SegmentedControlOptions = SegmentedControlOptions()
+let options = SegmentedControlOptions.default
 options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
 options.segmentButtonFontSize = 14  //YOUR FONT SIZE
 options.selectedTitleColor = .black // the button title color in selected / highlighed state
@@ -46,7 +46,7 @@ let pageVC = PageViewController(viewControllers: vcs, options: options)
 
 ## Example
 ```
-let options: SegmentedControlOptions = SegmentedControlOptions()
+let options = SegmentedControlOptions.default
 options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
 options.segmentButtonFontSize = 14  //YOUR FONT SIZE
 options.selectedTitleColor = .black // the button title color in selected / highlighed state
@@ -61,7 +61,7 @@ for color in colors {
     vcs.append(vc)
 }
 
-let pageVC = PageViewController(viewControllers: vcs, options: options)
+let pageVC = PageViewController(viewControllers: vcs)
 self.pushViewController(pageVC, animated: false)
 ```
 
