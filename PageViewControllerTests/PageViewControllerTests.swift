@@ -20,7 +20,7 @@ class PageViewControllerTests: XCTestCase {
     }
 
     func testIndexForViewController() {
-        let options: SegmentedControlOptions = SegmentedControlOptions()
+        let options = SegmentedControlOptions.default
         options.segmentedTitles = ["1", "2", "3", "4", "5"]
         
         let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
@@ -32,12 +32,12 @@ class PageViewControllerTests: XCTestCase {
         }
         let testIndex = 2
         let viewControllerToBeTested: UIViewController = vcs[testIndex]
-        let pageVC = PageViewController(viewControllers: vcs, options: options)
+        let pageVC = PageViewController(viewControllers: vcs)
         XCTAssert(pageVC.indexForViewController(viewControllerToBeTested) == testIndex)
     }
     
     func testViewControllerAtIndex() {
-        let options: SegmentedControlOptions = SegmentedControlOptions()
+        let options = SegmentedControlOptions.default
         options.segmentedTitles = ["1", "2", "3", "4", "5"]
         
         let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
@@ -49,7 +49,7 @@ class PageViewControllerTests: XCTestCase {
         }
         let testIndex = 3
         let viewControllerToBeTest: UIViewController = vcs[testIndex]
-        let pageVC = PageViewController(viewControllers: vcs, options: options)
+        let pageVC = PageViewController(viewControllers: vcs)
         XCTAssert(pageVC.viewControllerAtIndex(testIndex) == viewControllerToBeTest)
     }
 }
