@@ -13,6 +13,10 @@ public protocol PageViewControllerDelegate: NSObjectProtocol {
     func setIndex(index: Int)
 }
 
+internal protocol PagerDelegate {
+    func move(to nextPage: Int, completion: () -> ())
+}
+
 open class PageViewController: UIViewController {
     
     private struct FrameConstant {
@@ -52,14 +56,16 @@ open class PageViewController: UIViewController {
                 let nextWidth = nextTitle.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize))
                     
                 var diffWidth = nextWidth - currentWidth
-                if self.pageViewController.view.frame.size.width > self.pageScrollView.contentOffset.x { //scroll to left
-                    let ratio = (self.pageViewController.view.frame.size.width - self.pageScrollView.contentOffset.x) / self.pageViewController.view.frame.size.width
-                        
-                    diffWidth *= ratio
-                } else { //scroll to right
-                    let ratio = (self.pageScrollView.contentOffset.x - self.pageViewController.view.frame.size.width) / self.pageViewController.view.frame.size.width
-                        
-                    diffWidth *= ratio
+                if let pageViewController = self.pageViewController {
+                    if pageViewController.view.frame.size.width > self.pageScrollView.contentOffset.x { //scroll to left
+                        let ratio = (pageViewController.view.frame.size.width - self.pageScrollView.contentOffset.x) / pageViewController.view.frame.size.width
+                            
+                        diffWidth *= ratio
+                    } else { //scroll to right
+                        let ratio = (self.pageScrollView.contentOffset.x - pageViewController.view.frame.size.width) / pageViewController.view.frame.size.width
+                            
+                        diffWidth *= ratio
+                    }
                 }
                 width += diffWidth
             }
@@ -69,7 +75,7 @@ open class PageViewController: UIViewController {
         }
     }
     
-    private var pageViewController: UIPageViewController!
+    private var pageViewController: UIPageViewController?
     private var pageScrollView: UIScrollView!
     private var numOfPageCount = 0
     private var currentPageIndex = 0
@@ -78,12 +84,13 @@ open class PageViewController: UIViewController {
     private var isPageScrollingFlag = false
     private var hasAppearedFlag = false
     
-    private var segmentedControlView: UIScrollView? {
-        didSet {
-            self.segmentedControlView?.showsVerticalScrollIndicator = false
-            self.segmentedControlView?.showsHorizontalScrollIndicator = false
-        }
-    }
+    private var segmentedControlView: SegmentedControlView?
+    // {
+//        didSet {
+//            self.segmentedControlView?.showsVerticalScrollIndicator = false
+//            self.segmentedControlView?.showsHorizontalScrollIndicator = false
+//        }
+//    }
     private var isSegmentScrollable = false
     
     private var selectionIndicator: UIView!
@@ -149,12 +156,11 @@ open class PageViewController: UIViewController {
             setupSegmentButtons()
         }
         
-        setupPageViewController(initialIndex ?? 0)
-        
-        // Indicator must setup after PageViewController
         if shouldHaveSegment {
             setupIndicator(initialIndex ?? 0)
         }
+        
+        setupPageViewController(initialIndex ?? 0)
         
         if navigateToTabIndex > 0 && self.buttons.count > navigateToTabIndex {
             self.segmentButtonClicked(self.buttons[navigateToTabIndex])
@@ -227,11 +233,12 @@ open class PageViewController: UIViewController {
     
     private func setupPageViewController(_ initialIndex: Int? = nil) {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        guard let pageViewController = self.pageViewController else { return }
         if let bgColor = self.backgroundColor {
             pageViewController.view.backgroundColor = bgColor
         }
-        self.pageViewController.dataSource = self
-        self.pageViewController.delegate = self
+        pageViewController.dataSource = self
+        pageViewController.delegate = self
         
         for view in pageViewController.view.subviews {
             if let scrollview = view as? UIScrollView {
@@ -243,10 +250,10 @@ open class PageViewController: UIViewController {
         
         let startY = self.segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y + FrameConstant.SEGMENT_HEIGHT
         
-        self.pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
+        pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
         
         if let vcs = self.viewControllers, vcs.count > 0 {
-            self.pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
+            pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
         }
         self.view.addSubview(pageViewController.view)
     }
@@ -289,7 +296,7 @@ open class PageViewController: UIViewController {
             
             if sender.tag > tempIdx {
                 if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .forward, animated: false, completion: { (complete) in
+                    pageViewController?.setViewControllers([vcs[sender.tag]], direction: .forward, animated: false, completion: { (complete) in
                         if complete {
                             completion()
                         }
@@ -297,7 +304,7 @@ open class PageViewController: UIViewController {
                 }
             } else if sender.tag < tempIdx {
                 if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .reverse, animated: false, completion: { (complete) in
+                    pageViewController?.setViewControllers([vcs[sender.tag]], direction: .reverse, animated: false, completion: { (complete) in
                         if complete {
                             completion()
                         }
@@ -418,19 +425,19 @@ extension PageViewController: UIScrollViewDelegate {
         }
     }
     
-    private func isScrollViewBouncing(_ scrollView: UIScrollView) -> Bool {
-        let minXOffset = scrollView.bounds.size.width - (CGFloat(self.currentPageIndex) * scrollView.bounds.size.width)
-        let maxXOffset = CGFloat(numOfPageCount - self.currentPageIndex) * scrollView.bounds.size.width
-        
-        if scrollView.contentOffset.x <= minXOffset {
-            scrollView.contentOffset = CGPoint(x: minXOffset, y: 0)
-            return true
-        } else if scrollView.contentOffset.x >= maxXOffset {
-            scrollView.contentOffset = CGPoint(x: maxXOffset, y: 0)
-            return true
-        }
-        return false
-    }
+//    private func isScrollViewBouncing(_ scrollView: UIScrollView) -> Bool {
+//        let minXOffset = scrollView.bounds.size.width - (CGFloat(self.currentPageIndex) * scrollView.bounds.size.width)
+//        let maxXOffset = CGFloat(numOfPageCount - self.currentPageIndex) * scrollView.bounds.size.width
+//
+//        if scrollView.contentOffset.x <= minXOffset {
+//            scrollView.contentOffset = CGPoint(x: minXOffset, y: 0)
+//            return true
+//        } else if scrollView.contentOffset.x >= maxXOffset {
+//            scrollView.contentOffset = CGPoint(x: maxXOffset, y: 0)
+//            return true
+//        }
+//        return false
+//    }
     
     private func animateIndicator(_ scrollView: UIScrollView) {
         guard scrollView.contentOffset.x >= 0 && scrollView.contentOffset.x <= self.view.frame.size.width*2 else { return } //avoid scrolling too fast
@@ -476,29 +483,16 @@ extension PageViewController: UIScrollViewDelegate {
     }
 }
 
-extension String {
-    func getTextWidth(height: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
-        return boundingBox.width
-    }
-}
-
-extension UIColor {
-    static func addColor(_ color1: UIColor, with color2: UIColor) -> UIColor {
-        var (r1, g1, b1, a1) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-        var (r2, g2, b2, a2) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-
-        color1.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
-        color2.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
-
-        // add the components, but don't let them go above 1.0
-        return UIColor(red: min(r1 + r2, 1), green: min(g1 + g2, 1), blue: min(b1 + b2, 1), alpha: (a1 + a2) / 2)
-    }
-    
-    static func multiplyColor(_ color: UIColor, by multiplier: CGFloat) -> UIColor {
-        var (r, g, b, a) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-        color.getRed(&r, green: &g, blue: &b, alpha: &a)
-        return UIColor(red: r * multiplier, green: g * multiplier, blue: b * multiplier, alpha: a)
+extension PageViewController: PagerDelegate {
+    func move(to nextPage: Int, completion: () -> ()) {
+        let currentPage = segmentedControlView?.currentPage ?? 0
+        guard let vcs = self.viewControllers else { return }
+        if vcs.count > nextPage {
+            pageViewController?.setViewControllers([vcs[nextPage]], direction: nextPage > currentPage ? .forward : .reverse, animated: false, completion: { (complete) in
+                if complete {
+                    completion()
+                }
+            })
+        }
     }
 }

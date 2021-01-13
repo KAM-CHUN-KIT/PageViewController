@@ -9,30 +9,32 @@
 import UIKit
 
 open class SegmentedControlOptions {
-    var segmentedTitles: [String]
-    var selectedTitleColor: UIColor
-    var deSelectedTitleColor: UIColor
-    var indicatorColor: UIColor
-    var hasRedDot: [Bool]?
-    var segmentButtonFontSize: CGFloat
-    var navigateToTabIndex: Int
-    var isDynamicTabWidth: Bool
+    static let `default` = SegmentedControlOptions()
     
-    init(segmentedTitles: [String]? = ["Red", "Black"],
-         selectedTitleColor: UIColor? = UIColor.black,
-         deSelectedTitleColor: UIColor? = UIColor.lightGray,
-         indicatorColor: UIColor? = UIColor.red,
-         hasRedDot: [Bool]? = nil,
-         segmentButtonFontSize: CGFloat? = 14,
-         navigateToTabIndex: Int? = 0,
-         isDynamicTabWidth: Bool = true) {
-        self.segmentedTitles = segmentedTitles!
-        self.selectedTitleColor = selectedTitleColor!
-        self.deSelectedTitleColor = deSelectedTitleColor!
-        self.indicatorColor = indicatorColor!
-        self.hasRedDot = hasRedDot // nil means no red dot
-        self.segmentButtonFontSize = segmentButtonFontSize ?? 14
-        self.navigateToTabIndex = navigateToTabIndex ?? 0
-        self.isDynamicTabWidth = isDynamicTabWidth
-    }
+    var segmentedTitles: [String] = ["Red", "Black"]
+    var selectedTitleColor: UIColor = UIColor.black
+    var deSelectedTitleColor: UIColor = UIColor.lightGray
+    var indicatorColor: UIColor = UIColor.red
+    var hasRedDot: [Bool]?
+    var segmentButtonFontSize: CGFloat = 14
+    var navigateToTabIndex: Int = 0
+    var isDynamicTabWidth: Bool = true
+//
+//    init(segmentedTitles: [String]? = ["Red", "Black"],
+//         selectedTitleColor: UIColor? = UIColor.black,
+//         deSelectedTitleColor: UIColor? = UIColor.lightGray,
+//         indicatorColor: UIColor? = UIColor.red,
+//         hasRedDot: [Bool]? = nil,
+//         segmentButtonFontSize: CGFloat? = 14,
+//         navigateToTabIndex: Int? = 0,
+//         isDynamicTabWidth: Bool = true) {
+//        self.segmentedTitles = segmentedTitles!
+//        self.selectedTitleColor = selectedTitleColor!
+//        self.deSelectedTitleColor = deSelectedTitleColor!
+//        self.indicatorColor = indicatorColor!
+//        self.hasRedDot = hasRedDot // nil means no red dot
+//        self.segmentButtonFontSize = segmentButtonFontSize ?? 14
+//        self.navigateToTabIndex = navigateToTabIndex ?? 0
+//        self.isDynamicTabWidth = isDynamicTabWidth
+//    }
 }

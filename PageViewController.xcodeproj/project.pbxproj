@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A7581D625AF0B8C000701A1 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581D525AF0B8C000701A1 /* SegmentedControlView.swift */; };
+		3A7581D725AF0B97000701A1 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581D525AF0B8C000701A1 /* SegmentedControlView.swift */; };
+		3A7581D825AF0B98000701A1 /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581D525AF0B8C000701A1 /* SegmentedControlView.swift */; };
+		3A7581DB25AF29EA000701A1 /* Paging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DA25AF29EA000701A1 /* Paging.swift */; };
+		3A7581DC25AF29EA000701A1 /* Paging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DA25AF29EA000701A1 /* Paging.swift */; };
+		3A7581DD25AF29EA000701A1 /* Paging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DA25AF29EA000701A1 /* Paging.swift */; };
+		3A7581DF25AF375F000701A1 /* Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DE25AF375F000701A1 /* Scrolling.swift */; };
+		3A7581E025AF375F000701A1 /* Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DE25AF375F000701A1 /* Scrolling.swift */; };
+		3A7581E125AF375F000701A1 /* Scrolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581DE25AF375F000701A1 /* Scrolling.swift */; };
+		3A7581E425AF41FE000701A1 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E325AF41FE000701A1 /* UIColorExtension.swift */; };
+		3A7581E525AF41FE000701A1 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E325AF41FE000701A1 /* UIColorExtension.swift */; };
+		3A7581E625AF41FE000701A1 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E325AF41FE000701A1 /* UIColorExtension.swift */; };
+		3A7581E825AF421E000701A1 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E725AF421E000701A1 /* StringExtension.swift */; };
+		3A7581E925AF421E000701A1 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E725AF421E000701A1 /* StringExtension.swift */; };
+		3A7581EA25AF421E000701A1 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7581E725AF421E000701A1 /* StringExtension.swift */; };
 		3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AA470A423AE647D00285070 /* SegmentedControlOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */; };
 		3AA470A523AE648300285070 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFF277A22BE7886000E8C60 /* PageViewController.swift */; };
@@ -34,6 +49,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A7581D525AF0B8C000701A1 /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
+		3A7581DA25AF29EA000701A1 /* Paging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paging.swift; sourceTree = "<group>"; };
+		3A7581DE25AF375F000701A1 /* Scrolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scrolling.swift; sourceTree = "<group>"; };
+		3A7581E325AF41FE000701A1 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		3A7581E725AF421E000701A1 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		3AFF274522BE776C000E8C60 /* PageViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PageViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AFF274822BE776C000E8C60 /* PageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		3AFF274922BE776C000E8C60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -77,6 +97,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A7581D925AF1277000701A1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3A7581DA25AF29EA000701A1 /* Paging.swift */,
+				3A7581DE25AF375F000701A1 /* Scrolling.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		3A7581E225AF41EB000701A1 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				3A7581E325AF41FE000701A1 /* UIColorExtension.swift */,
+				3A7581E725AF421E000701A1 /* StringExtension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		3AFF273B22BE776C000E8C60 = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +138,8 @@
 		3AFF274722BE776C000E8C60 /* PageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				3A7581E225AF41EB000701A1 /* Extension */,
+				3A7581D925AF1277000701A1 /* Protocols */,
 				3AFF277522BE7886000E8C60 /* Component */,
 				3AFF274822BE776C000E8C60 /* PageViewController.h */,
 				3AFF274922BE776C000E8C60 /* Info.plist */,
@@ -142,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				3AFF277722BE7886000E8C60 /* SegmentedControlOptions.swift */,
+				3A7581D525AF0B8C000701A1 /* SegmentedControlView.swift */,
 			);
 			path = SegmentedControl;
 			sourceTree = "<group>";
@@ -285,8 +326,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A7581DF25AF375F000701A1 /* Scrolling.swift in Sources */,
+				3A7581E825AF421E000701A1 /* StringExtension.swift in Sources */,
 				3AFF277B22BE7886000E8C60 /* SegmentedControlOptions.swift in Sources */,
+				3A7581DB25AF29EA000701A1 /* Paging.swift in Sources */,
 				3AFF278122BE7886000E8C60 /* PageViewController.swift in Sources */,
+				3A7581D625AF0B8C000701A1 /* SegmentedControlView.swift in Sources */,
+				3A7581E425AF41FE000701A1 /* UIColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,8 +341,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AA470A523AE648300285070 /* PageViewController.swift in Sources */,
+				3A7581E525AF41FE000701A1 /* UIColorExtension.swift in Sources */,
+				3A7581DC25AF29EA000701A1 /* Paging.swift in Sources */,
+				3A7581D725AF0B97000701A1 /* SegmentedControlView.swift in Sources */,
+				3A7581E925AF421E000701A1 /* StringExtension.swift in Sources */,
 				3AFF275422BE776C000E8C60 /* PageViewControllerTests.swift in Sources */,
 				3AA470A423AE647D00285070 /* SegmentedControlOptions.swift in Sources */,
+				3A7581E025AF375F000701A1 /* Scrolling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,9 +357,14 @@
 			files = (
 				3AFF276822BE7806000E8C60 /* ViewController.swift in Sources */,
 				3AFF276622BE7806000E8C60 /* AppDelegate.swift in Sources */,
+				3A7581EA25AF421E000701A1 /* StringExtension.swift in Sources */,
 				3AFF278B22BE873A000E8C60 /* ExampleViewController.swift in Sources */,
 				3AFF278C22BEA4A2000E8C60 /* PageViewController.swift in Sources */,
+				3A7581DD25AF29EA000701A1 /* Paging.swift in Sources */,
+				3A7581E625AF41FE000701A1 /* UIColorExtension.swift in Sources */,
 				3AA4709E23AE3D4800285070 /* SegmentedControlOptions.swift in Sources */,
+				3A7581D825AF0B98000701A1 /* SegmentedControlView.swift in Sources */,
+				3A7581E125AF375F000701A1 /* Scrolling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
