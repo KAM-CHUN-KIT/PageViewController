@@ -13,121 +13,37 @@ public protocol PageViewControllerDelegate: NSObjectProtocol {
     func setIndex(index: Int)
 }
 
+internal protocol PagerDelegate {
+    func move(to nextPage: Int, completion: @escaping () -> ())
+}
+
 open class PageViewController: UIViewController {
-    
-    private struct FrameConstant {
-        static let Y_BUFFER = 14
-        static let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
-        static let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
-        static let BOUNCE_BUFFER = 10
-        static let ANIMATION_SPEED: CGFloat = 0.2
-        static let SELECTOR_Y_BUFFER: CGFloat = 36
-        static let SELECTOR_HEIGHT: CGFloat = 2.0
-        static let SEGMENT_HEIGHT: CGFloat = 45
-        static let SEGMENT_Y: CGFloat = 0.0
-    }
-    
-    private var dynamicWidthTab: Bool = false // custom control to your segment button with fixed width or display the entire title
-    private var shouldHaveSegment = false // enable segment tab row
-    private var navigateToTabIndex = 0 /* bring to specific tab by assigning index */
     private var viewControllers: [UIViewController]?
-    private var segmentedTitles: [String]?
-    private var segmentedFontSize: CGFloat = 14
-    private var buttons = [UIButton]()
-    private var selectedTitleColor: UIColor?
-    private var deSelectedTitleColor: UIColor?
-    private var indicatorColor: UIColor?
+    private var pageViewController: UIPageViewController?
+    private var pageScrollView: UIScrollView?
     
-    private var X_BUFFER = 0
-    private var SELECTOR_WIDTH: CGFloat {
-        get { // Do real time calculation of the indicator width.
-            var btnWidth: CGFloat = 0.0
-            var width: CGFloat = 0.0
-            if let titles = segmentedTitles, titles.count > 0, buttons.count > currentPageIndex, titles.count > currentPageIndex, titles.count > nextPageIndex {
-                let title = titles[currentPageIndex]
-                let nextTitle = titles[nextPageIndex]
-                btnWidth = buttons[currentPageIndex].frame.size.width
-                let currentWidth = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize))
-                width = currentWidth
-                let nextWidth = nextTitle.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize))
-                    
-                var diffWidth = nextWidth - currentWidth
-                if self.pageViewController.view.frame.size.width > self.pageScrollView.contentOffset.x { //scroll to left
-                    let ratio = (self.pageViewController.view.frame.size.width - self.pageScrollView.contentOffset.x) / self.pageViewController.view.frame.size.width
-                        
-                    diffWidth *= ratio
-                } else { //scroll to right
-                    let ratio = (self.pageScrollView.contentOffset.x - self.pageViewController.view.frame.size.width) / self.pageViewController.view.frame.size.width
-                        
-                    diffWidth *= ratio
-                }
-                width += diffWidth
-            }
-            width += FrameConstant.SELECTOR_WIDTH_BUFFER
-            X_BUFFER = Int((btnWidth - width)/2)
-            return width
-        }
-    }
-    
-    private var pageViewController: UIPageViewController!
-    private var pageScrollView: UIScrollView!
-    private var numOfPageCount = 0
-    private var currentPageIndex = 0
-    private var nextPageIndex = 0
-    
-    private var isPageScrollingFlag = false
     private var hasAppearedFlag = false
     
-    private var segmentedControlView: UIScrollView? {
-        didSet {
-            self.segmentedControlView?.showsVerticalScrollIndicator = false
-            self.segmentedControlView?.showsHorizontalScrollIndicator = false
-        }
-    }
-    private var isSegmentScrollable = false
-    
-    private var selectionIndicator: UIView!
-    private var backgroundColor: UIColor?
-    private let IndicatorOffset: CGFloat = 5
-    private var initialIndex: Int? = nil
+    private var segmentedControlView: SegmentedControlView?
     private var initialOffset: CGPoint = .zero
     
-    init(viewControllers: [UIViewController]?, options: SegmentedControlOptions? = nil) {
+    init(viewControllers: [UIViewController]?) {
         super.init(nibName: nil, bundle: nil)
         
         guard let vcs = viewControllers else {
             print("**** No viewControllers was detected, please check your initializer****")
             return
         }
+        let option = SegmentedControlOptions.default
+        guard vcs.count == option.segmentedTitles.count else {
+            print("**** viewControllers is not match with segmented titles count ****")
+            return
+        }
         self.viewControllers = vcs
-        numOfPageCount = vcs.count
         for (index, vc) in vcs.enumerated() {
             if let delegate = vc as? PageViewControllerDelegate {
                 delegate.setIndex(index: index)
             }
-        }
-        
-        if let opt = options {
-            guard vcs.count == opt.segmentedTitles.count else {
-                print("**** viewControllers is not match with segmented titles count ****")
-                return
-            }
-            
-            self.shouldHaveSegment = true
-            self.dynamicWidthTab = opt.isDynamicTabWidth
-            self.navigateToTabIndex = opt.navigateToTabIndex
-            let titles = opt.segmentedTitles
-            self.segmentedTitles = titles
-            for (index, title) in titles.enumerated() {
-                if buttons.count > index {
-                    let button = buttons[index]
-                    button.setTitle(title, for: .normal)
-                }
-            }
-            self.segmentedFontSize = opt.segmentButtonFontSize
-            self.selectedTitleColor = opt.selectedTitleColor
-            self.deSelectedTitleColor = opt.deSelectedTitleColor
-            self.indicatorColor = opt.indicatorColor
         }
     }
     
@@ -138,100 +54,32 @@ open class PageViewController: UIViewController {
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if !hasAppearedFlag, let _ = self.viewControllers, let _ = self.segmentedTitles { //will only setup UI with local data in willAppear
+        if !hasAppearedFlag, let _ = self.viewControllers { //will only setup UI with local data in willAppear
             self.reveal()
         }
         hasAppearedFlag = true
     }
     
     private func reveal() {
-        if shouldHaveSegment {
-            setupSegmentButtons()
-        }
+        self.segmentedControlView = SegmentedControlView(frame: CGRect(x: 0, y: SegmentedControlOptions.FrameConstant.SEGMENT_Y, width: self.view.frame.size.width, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT))
+        self.segmentedControlView?.pagerDelegate = self
+        self.segmentedControlView?.update(pageWidth: self.view.frame.size.width)
+        self.view.addSubview(self.segmentedControlView!)
         
-        setupPageViewController(initialIndex ?? 0)
+        setupPageViewController(SegmentedControlOptions.default.navigateToTabIndex)
         
-        // Indicator must setup after PageViewController
-        if shouldHaveSegment {
-            setupIndicator(initialIndex ?? 0)
-        }
-        
-        if navigateToTabIndex > 0 && self.buttons.count > navigateToTabIndex {
-            self.segmentButtonClicked(self.buttons[navigateToTabIndex])
-        }
+//        if navigateToTabIndex > 0 && self.buttons.count > navigateToTabIndex {
+//            self.segmentButtonClicked(self.buttons[navigateToTabIndex])
+//        }
         
         self.hasAppearedFlag = true
     }
     
-    private func setupSegmentButtons() {
-        self.segmentedControlView = UIScrollView(frame: CGRect(x: 0, y: FrameConstant.SEGMENT_Y, width: self.view.frame.size.width, height: FrameConstant.SEGMENT_HEIGHT))
-        
-        guard let titles = self.segmentedTitles, let segmentedControl = self.segmentedControlView else {
-            return
-        }
-        
-        var contentSizeWidth: CGFloat = 0.0
-        for title in titles {
-            contentSizeWidth += title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
-        }
-        
-        var remainAverageW:CGFloat = 0.0
-        if contentSizeWidth > segmentedControl.bounds.width {
-            self.isSegmentScrollable = true
-            segmentedControl.contentSize = CGSize(width: contentSizeWidth, height: FrameConstant.SEGMENT_HEIGHT)
-        } else if dynamicWidthTab {
-            let remainWidth = segmentedControl.bounds.width - contentSizeWidth
-            remainAverageW = remainWidth / CGFloat(titles.count)
-        }
-        
-        if titles.count >= numOfPageCount {//safety guard
-            for i in 0..<numOfPageCount {
-                var buttonWidth: CGFloat = 0
-                
-                if isSegmentScrollable || dynamicWidthTab {
-                    buttonWidth = titles[i].getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + FrameConstant.BUTTON_WIDTH_BUFFER
-                } else {
-                    buttonWidth = ((self.view.frame.size.width) / CGFloat(numOfPageCount))
-                }
-                
-                if dynamicWidthTab && !isSegmentScrollable {
-                    buttonWidth += remainAverageW
-                }
-                
-                let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
-                let button = UIButton(frame: CGRect(x: previousButtonMaxX,
-                                                           y: 0,
-                                                           width: buttonWidth,
-                                                           height: FrameConstant.SEGMENT_HEIGHT))
-                button.titleLabel?.font = UIFont.boldSystemFont(ofSize: segmentedFontSize)
-                button.tag = i
-                let title = titles[i]
-                button.setTitle(title, for: .normal)
-                
-                button.addTarget(self, action: #selector(self.segmentButtonClicked), for: .touchUpInside)
-                if i == 1 {
-                    button.titleLabel?.adjustsFontSizeToFitWidth = true
-                }
-                button.setTitleColor(deSelectedTitleColor, for: .normal)
-                button.setTitleColor(selectedTitleColor, for: .highlighted)
-                button.setTitleColor(selectedTitleColor, for: .selected)
-                
-                buttons.append(button)
-                segmentedControl.addSubview(button)
-            }
-        }
-        
-        self.view.addSubview(self.segmentedControlView!)
-        buttons[initialIndex ?? 0].isSelected = true
-    }
-    
     private func setupPageViewController(_ initialIndex: Int? = nil) {
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        if let bgColor = self.backgroundColor {
-            pageViewController.view.backgroundColor = bgColor
-        }
-        self.pageViewController.dataSource = self
-        self.pageViewController.delegate = self
+        guard let pageViewController = self.pageViewController else { return }
+        pageViewController.dataSource = self
+        pageViewController.delegate = self
         
         for view in pageViewController.view.subviews {
             if let scrollview = view as? UIScrollView {
@@ -241,100 +89,14 @@ open class PageViewController: UIViewController {
             }
         }
         
-        let startY = self.segmentedControlView?.frame.maxY ?? FrameConstant.SEGMENT_Y + FrameConstant.SEGMENT_HEIGHT
+        let startY = self.segmentedControlView?.frame.maxY ?? SegmentedControlOptions.FrameConstant.SEGMENT_Y + SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT
         
-        self.pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
+        pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
         
         if let vcs = self.viewControllers, vcs.count > 0 {
-            self.pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
+            pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
         }
         self.view.addSubview(pageViewController.view)
-    }
-    
-    private func setupIndicator(_ initialIndex: Int? = nil) {
-        var x = CGFloat(X_BUFFER)
-        var width = SELECTOR_WIDTH
-        
-        if let titles = segmentedTitles, let initialIndex = initialIndex {
-            let title = titles[initialIndex]
-            width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
-            x = buttons[initialIndex].center.x - width / 2
-            
-            currentPageIndex = initialIndex
-        }
-        
-        selectionIndicator = UIView(frame: CGRect(x: x, y: FrameConstant.SELECTOR_Y_BUFFER, width: width, height: FrameConstant.SELECTOR_HEIGHT))
-        selectionIndicator.layer.cornerRadius = FrameConstant.SELECTOR_HEIGHT/2
-        selectionIndicator.backgroundColor = indicatorColor
-        segmentedControlView?.addSubview(selectionIndicator)
-    }
-    
-    @objc func segmentButtonClicked(_ sender: UIButton!) {
-        if !self.isPageScrollingFlag {
-            
-            let tempIdx = self.currentPageIndex
-            
-            let completion = { [weak self] in
-                if let aSelf = self {
-                    aSelf.currentPageIndex = aSelf.nextPageIndex
-                    for btn in aSelf.buttons {
-                        btn.isSelected = false
-                    }
-                    sender.isSelected = true
-                }
-            }
-            
-            self.nextPageIndex = sender.tag
-            updateIndicator()
-            
-            if sender.tag > tempIdx {
-                if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .forward, animated: false, completion: { (complete) in
-                        if complete {
-                            completion()
-                        }
-                    })
-                }
-            } else if sender.tag < tempIdx {
-                if let vcs = self.viewControllers, vcs.count > sender.tag {
-                    pageViewController.setViewControllers([vcs[sender.tag]], direction: .reverse, animated: false, completion: { (complete) in
-                        if complete {
-                            completion()
-                        }
-                    })
-                }
-            }
-        }
-    }
-    
-    private func updateIndicator() {
-        if let titles = segmentedTitles {
-            let title = titles[nextPageIndex]
-            let width = title.getTextWidth(height: FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + FrameConstant.SELECTOR_WIDTH_BUFFER
-            let xPos = self.buttons[nextPageIndex].center.x - width / 2
-            
-            UIView.animate(withDuration: 0.2, animations: {
-                self.selectionIndicator.frame = CGRect(
-                    x: xPos,
-                    y: CGFloat(self.selectionIndicator.frame.origin.y),
-                    width: width,
-                    height: CGFloat(self.selectionIndicator.frame.size.height)
-                )
-            })
-        }
-    }
-    
-    private func selectTab(atIndex index: Int) {
-        if buttons.count > index {
-            segmentButtonClicked(buttons[index])
-        }
-    }
-    
-    private func tab(atIndex index: Int, loadTitle title: String) {
-        if buttons.count > index {
-            let button = buttons[index]
-            button.setTitle(title, for: .normal)
-        }
     }
 }
 
@@ -379,7 +141,7 @@ extension PageViewController: UIPageViewControllerDataSource {
         if let vcs = self.viewControllers {
             for i in 0..<vcs.count {
                 if pendingViewControllers[0] == vcs[i] {
-                    nextPageIndex = i
+                    segmentedControlView?.update(nextPage: i)
                     break
                 }
             }
@@ -389,116 +151,35 @@ extension PageViewController: UIPageViewControllerDataSource {
 
 extension PageViewController: UIScrollViewDelegate {
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.isPageScrollingFlag = true
+        self.segmentedControlView?.updateIsPageScrolling(true)
         self.initialOffset = scrollView.contentOffset
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        self.isPageScrollingFlag = false
+        self.segmentedControlView?.updateIsPageScrolling(false)
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard buttons.count > currentPageIndex else {
-            return
-        }
-        
-        if isPageScrollingFlag {
-            
-            if scrollView.contentOffset.x <= 0 || scrollView.contentOffset.x >= scrollView.frame.size.width * 2 {
-                let previousButton = buttons[currentPageIndex]
-                previousButton.isSelected = false
-                
-                currentPageIndex = nextPageIndex
-                
-                let currentButton = buttons[currentPageIndex]
-                currentButton.isSelected = true
-            }
-            
-            animateIndicator(scrollView)
-        }
-    }
-    
-    private func isScrollViewBouncing(_ scrollView: UIScrollView) -> Bool {
-        let minXOffset = scrollView.bounds.size.width - (CGFloat(self.currentPageIndex) * scrollView.bounds.size.width)
-        let maxXOffset = CGFloat(numOfPageCount - self.currentPageIndex) * scrollView.bounds.size.width
-        
-        if scrollView.contentOffset.x <= minXOffset {
-            scrollView.contentOffset = CGPoint(x: minXOffset, y: 0)
-            return true
-        } else if scrollView.contentOffset.x >= maxXOffset {
-            scrollView.contentOffset = CGPoint(x: maxXOffset, y: 0)
-            return true
-        }
-        return false
-    }
-    
-    private func animateIndicator(_ scrollView: UIScrollView) {
-        guard scrollView.contentOffset.x >= 0 && scrollView.contentOffset.x <= self.view.frame.size.width*2 else { return } //avoid scrolling too fast
-        let xFromCenter: Int = Int(self.view.frame.size.width - scrollView.contentOffset.x)
-        let width = SELECTOR_WIDTH
-        
-        let xCoor: CGFloat = CGFloat(X_BUFFER) + buttons[currentPageIndex].frame.origin.x
-        let ratio: CGFloat = ((buttons[currentPageIndex].frame.size.width + buttons[nextPageIndex].frame.size.width) / 2) / self.view.frame.size.width
-        
         let percentage: CGFloat
         if initialOffset.x > scrollView.contentOffset.x {
             percentage = (initialOffset.x - scrollView.contentOffset.x)/self.view.frame.width
         }else {
             percentage = (scrollView.contentOffset.x - initialOffset.x)/self.view.frame.width
         }
-        
-        print(percentage)
-        buttons[currentPageIndex].titleLabel?.textColor = UIColor.addColor(UIColor.multiplyColor(selectedTitleColor!, by: (1-percentage)), with: UIColor.multiplyColor(deSelectedTitleColor!, by: percentage))
-        buttons[nextPageIndex].titleLabel?.textColor = UIColor.addColor(UIColor.multiplyColor(selectedTitleColor!, by: percentage), with: UIColor.multiplyColor(deSelectedTitleColor!, by: (1-percentage)))
-        
-        self.selectionIndicator.frame = CGRect(
-            x: xCoor - CGFloat(xFromCenter) * ratio,
-            y: CGFloat(selectionIndicator.frame.origin.y),
-            width: width,
-            height: CGFloat(selectionIndicator.frame.size.height)
-        )
-        
-        if isSegmentScrollable {
-            pagingSegmentedControl()
-        }
-    }
-    
-    private func pagingSegmentedControl() {
-        if let segmentView = self.segmentedControlView, buttons.count > currentPageIndex {
-            let targetButton = buttons[currentPageIndex]
-            let outsideBound: Bool = (segmentView.contentOffset.x + segmentView.frame.size.width) <= targetButton.frame.maxX
-                || segmentView.contentOffset.x > targetButton.frame.origin.x
-            
-            if outsideBound {
-                segmentView.contentOffset = CGPoint(x: max(targetButton.frame.origin.x, 0), y: 0)
-            }
-        }
+        segmentedControlView?.scroll(offset: scrollView.contentOffset, percent: percentage)
     }
 }
 
-extension String {
-    func getTextWidth(height: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
-        return boundingBox.width
-    }
-}
-
-extension UIColor {
-    static func addColor(_ color1: UIColor, with color2: UIColor) -> UIColor {
-        var (r1, g1, b1, a1) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-        var (r2, g2, b2, a2) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-
-        color1.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
-        color2.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
-
-        // add the components, but don't let them go above 1.0
-        return UIColor(red: min(r1 + r2, 1), green: min(g1 + g2, 1), blue: min(b1 + b2, 1), alpha: (a1 + a2) / 2)
-    }
-    
-    static func multiplyColor(_ color: UIColor, by multiplier: CGFloat) -> UIColor {
-        var (r, g, b, a) = (CGFloat(0), CGFloat(0), CGFloat(0), CGFloat(0))
-        color.getRed(&r, green: &g, blue: &b, alpha: &a)
-        return UIColor(red: r * multiplier, green: g * multiplier, blue: b * multiplier, alpha: a)
+extension PageViewController: PagerDelegate {
+    func move(to nextPage: Int, completion: @escaping () -> ()) {
+        let currentPage = segmentedControlView?.currentPage ?? 0
+        guard let vcs = self.viewControllers else { return }
+        if vcs.count > nextPage {
+            pageViewController?.setViewControllers([vcs[nextPage]], direction: nextPage > currentPage ? .forward : .reverse, animated: false, completion: { (complete) in
+                if complete {
+                    completion()
+                }
+            })
+        }
     }
 }
