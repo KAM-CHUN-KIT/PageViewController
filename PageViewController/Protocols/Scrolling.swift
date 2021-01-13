@@ -10,5 +10,5 @@ import UIKit
 
 protocol Scrolling {
     func updateIsPageScrolling(_ isScrolling: Bool)
-    func scroll( offset: CGPoint, percent: CGFloat)
+    func scroll(offset: CGPoint, percent: CGFloat)
 }
