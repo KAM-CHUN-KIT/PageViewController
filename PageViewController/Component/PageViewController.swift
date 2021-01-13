@@ -160,9 +160,6 @@ extension PageViewController: UIScrollViewDelegate {
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        guard buttons.count > currentPageIndex else {
-//            return
-//        }
         let percentage: CGFloat
         if initialOffset.x > scrollView.contentOffset.x {
             percentage = (initialOffset.x - scrollView.contentOffset.x)/self.view.frame.width

@@ -227,23 +227,21 @@ extension SegmentedControlView: Scrolling {
             let currentButton = buttons[currentPageIndex]
             currentButton.isSelected = true
         }
-        animateIndicator(offset: offset, percent: percent)
+        animateIndicator(offset: offset)
+        animateTitleColor(percent: percent)
     }
     
     func updateIsPageScrolling(_ isScrolling: Bool) {
         self.isPageScrollingFlag = isScrolling
     }
     
-    private func animateIndicator(offset: CGPoint, percent: CGFloat) {
+    private func animateIndicator(offset: CGPoint) {
         guard offset.x >= 0 && offset.x <= pageWidth*2 else { return } //avoid scrolling too fast
         let xFromCenter: Int = Int(pageWidth - offset.x)
         let width = SELECTOR_WIDTH
         
         let xCoor: CGFloat = CGFloat(X_BUFFER) + buttons[currentPageIndex].frame.origin.x
         let ratio: CGFloat = ((buttons[currentPageIndex].frame.size.width + buttons[nextPageIndex].frame.size.width) / 2) / pageWidth
-        
-        buttons[currentPageIndex].titleLabel?.textColor = selectedTitleColor.multiplyColor(by: (1-percent)).addColor(with: deSelectedTitleColor.multiplyColor(by: percent))
-        buttons[nextPageIndex].titleLabel?.textColor = selectedTitleColor.multiplyColor(by: percent).addColor(with: deSelectedTitleColor.multiplyColor(by: (1-percent)))
         
         self.selectionIndicator.frame = CGRect(
             x: xCoor - CGFloat(xFromCenter) * ratio,
@@ -255,6 +253,12 @@ extension SegmentedControlView: Scrolling {
         if isSegmentScrollable {
             pagingSegmentedControl()
         }
+    }
+    
+    private func animateTitleColor(percent: CGFloat) {
+        guard currentPageIndex != nextPageIndex else { return }
+        buttons[currentPageIndex].titleLabel?.textColor = selectedTitleColor.multiplyColor(by: (1-percent)).addColor(with: deSelectedTitleColor.multiplyColor(by: percent))
+        buttons[nextPageIndex].titleLabel?.textColor = selectedTitleColor.multiplyColor(by: percent).addColor(with: deSelectedTitleColor.multiplyColor(by: (1-percent)))
     }
     
     private func pagingSegmentedControl() {
