@@ -18,7 +18,16 @@ internal protocol PagerDelegate {
 }
 
 open class PageViewController: UIViewController {
-    private var viewControllers: [UIViewController]?
+    var viewControllers: [UIViewController]? {
+        didSet {
+            guard let vcs = self.viewControllers else { return }
+            for (index, vc) in vcs.enumerated() {
+                if let delegate = vc as? PageViewControllerDelegate {
+                    delegate.setIndex(index: index)
+                }
+            }
+        }
+    }
     private var pageViewController: UIPageViewController?
     private var pageScrollView: UIScrollView?
     
@@ -27,11 +36,11 @@ open class PageViewController: UIViewController {
     private var segmentedControlView: SegmentedControlView?
     private var initialOffset: CGPoint = .zero
     
-    init(viewControllers: [UIViewController]?) {
+    init(viewControllers: [UIViewController]? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         guard let vcs = viewControllers else {
-            print("**** No viewControllers was detected, please check your initializer****")
+            print("**** No viewControllers was detected at initializer, you need to `reveal` the page by yourself ****")
             return
         }
         let option = SegmentedControlOptions.default
@@ -40,11 +49,6 @@ open class PageViewController: UIViewController {
             return
         }
         self.viewControllers = vcs
-        for (index, vc) in vcs.enumerated() {
-            if let delegate = vc as? PageViewControllerDelegate {
-                delegate.setIndex(index: index)
-            }
-        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -60,7 +64,8 @@ open class PageViewController: UIViewController {
         hasAppearedFlag = true
     }
     
-    private func reveal() {
+    open func reveal() {
+        guard !hasAppearedFlag else { return }
         self.segmentedControlView = SegmentedControlView(frame: CGRect(x: 0, y: SegmentedControlOptions.FrameConstant.SEGMENT_Y, width: self.view.frame.size.width, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT))
         self.segmentedControlView?.pagerDelegate = self
         self.segmentedControlView?.update(pageWidth: self.view.frame.size.width)
