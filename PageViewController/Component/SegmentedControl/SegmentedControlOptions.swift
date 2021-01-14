@@ -9,7 +9,7 @@
 import UIKit
 
 open class SegmentedControlOptions {
-    static let `default` = SegmentedControlOptions()
+    public static let `default` = SegmentedControlOptions()
     struct FrameConstant {
         static let Y_BUFFER = 14
         static let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
@@ -22,13 +22,13 @@ open class SegmentedControlOptions {
         static let SEGMENT_Y: CGFloat = 0.0
     }
     
-    var segmentedTitles: [String] = ["Red", "Black"]
-    var segmentedViewBackgroundColor: UIColor = UIColor.white
-    var selectedTitleColor: UIColor = UIColor.black
-    var deSelectedTitleColor: UIColor = UIColor.lightGray
-    var indicatorColor: UIColor = UIColor.red
-    var hasRedDot: [Bool]?
-    var segmentButtonFontSize: CGFloat = 14
-    var navigateToTabIndex: Int = 0
-    var isDynamicTabWidth: Bool = true
+    public var segmentedTitles: [String] = ["Red", "Black"]
+    public var segmentedViewBackgroundColor: UIColor = UIColor.white
+    public var selectedTitleColor: UIColor = UIColor.black
+    public var deSelectedTitleColor: UIColor = UIColor.lightGray
+    public var indicatorColor: UIColor = UIColor.red
+    public var hasRedDot: [Bool]?
+    public var segmentButtonFontSize: CGFloat = 14
+    public var navigateToTabIndex: Int = 0
+    public var isDynamicTabWidth: Bool = true
 }

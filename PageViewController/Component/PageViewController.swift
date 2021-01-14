@@ -18,7 +18,7 @@ internal protocol PagerDelegate {
 }
 
 open class PageViewController: UIViewController {
-    var viewControllers: [UIViewController]? {
+    open var viewControllers: [UIViewController]? {
         didSet {
             guard let vcs = self.viewControllers else { return }
             for (index, vc) in vcs.enumerated() {
@@ -36,7 +36,7 @@ open class PageViewController: UIViewController {
     private var segmentedControlView: SegmentedControlView?
     private var initialOffset: CGPoint = .zero
     
-    init(viewControllers: [UIViewController]? = nil) {
+    public init(viewControllers: [UIViewController]? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         guard let vcs = viewControllers else {
@@ -51,6 +51,7 @@ open class PageViewController: UIViewController {
         self.viewControllers = vcs
     }
     
+    @available(*, unavailable)
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
