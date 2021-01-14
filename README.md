@@ -3,7 +3,7 @@
 A flexiable and easy to use view pager library for Swift.
 
 ## Preview
-<img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
+<img src="Screenshot/ezgif-2-b61dd2d2b087.gif" width=350/>
 
 ## Setup
 You may customize your segmented control by configuration:
