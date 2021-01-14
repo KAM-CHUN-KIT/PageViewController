@@ -3,29 +3,32 @@
 //  NavigationItem
 //
 //  Created by Kam on 11/5/2017.
-//  Copyright © 2017 MyMM. All rights reserved.
+//  Copyright © 2017 Kam. All rights reserved.
 //
 
 import UIKit
 
 open class SegmentedControlOptions {
-    var segmentedTitles: [String]
-    var selectedTitleColor: UIColor
-    var deSelectedTitleColor: UIColor
-    var indicatorColor: UIColor
-    var hasRedDot: [Bool]?
-    var segmentButtonFontSize: CGFloat
-    var navigateToTabIndex: Int
-    var isDynamicTabWidth: Bool
-    
-    init(segmentedTitles: [String]? = ["Red", "Black"], selectedTitleColor: UIColor? = UIColor.black, deSelectedTitleColor: UIColor? = UIColor.lightGray, indicatorColor: UIColor? = UIColor.red, hasRedDot: [Bool]? = nil, segmentButtonFontSize: CGFloat? = 14, navigateToTabIndex: Int? = 0, isDynamicTabWidth: Bool = true) {
-        self.segmentedTitles = segmentedTitles!
-        self.selectedTitleColor = selectedTitleColor!
-        self.deSelectedTitleColor = deSelectedTitleColor!
-        self.indicatorColor = indicatorColor!
-        self.hasRedDot = hasRedDot // nil means no red dot
-        self.segmentButtonFontSize = segmentButtonFontSize ?? 14
-        self.navigateToTabIndex = navigateToTabIndex ?? 0
-        self.isDynamicTabWidth = isDynamicTabWidth
+    static let `default` = SegmentedControlOptions()
+    struct FrameConstant {
+        static let Y_BUFFER = 14
+        static let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
+        static let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
+        static let BOUNCE_BUFFER = 10
+        static let ANIMATION_SPEED: CGFloat = 0.2
+        static let SELECTOR_Y_BUFFER: CGFloat = 36
+        static let SELECTOR_HEIGHT: CGFloat = 2.0
+        static let SEGMENT_HEIGHT: CGFloat = 45
+        static let SEGMENT_Y: CGFloat = 0.0
     }
+    
+    var segmentedTitles: [String] = ["Red", "Black"]
+    var segmentedViewBackgroundColor: UIColor = UIColor.white
+    var selectedTitleColor: UIColor = UIColor.black
+    var deSelectedTitleColor: UIColor = UIColor.lightGray
+    var indicatorColor: UIColor = UIColor.red
+    var hasRedDot: [Bool]?
+    var segmentButtonFontSize: CGFloat = 14
+    var navigateToTabIndex: Int = 0
+    var isDynamicTabWidth: Bool = true
 }

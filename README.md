@@ -3,12 +3,12 @@
 A flexiable and easy to use view pager library for Swift.
 
 ## Preview
-<img src="Screenshot/ezgif-4-2168d0e5043a.gif" width=350/>
+<img src="Screenshot/ezgif-2-b61dd2d2b087.gif" width=350/>
 
 ## Setup
 You may customize your segmented control by configuration:
 ```
-let options: SegmentedControlOptions = SegmentedControlOptions()
+let options = SegmentedControlOptions.default
 options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
 options.segmentButtonFontSize = 14  //YOUR FONT SIZE
 options.selectedTitleColor = .black // the button title color in selected / highlighed state
@@ -18,7 +18,8 @@ options.indicatorColor = .red // the indicator color
 
 More configurable options:
 ```
-var segmentedTitles: [String] 
+var segmentedTitles: [String]
+var segmentedViewBackgroundColor: UIColor
 var selectedTitleColor: UIColor
 var deSelectedTitleColor: UIColor
 var indicatorColor: UIColor
@@ -41,12 +42,12 @@ for color in colors {
 
 Initialize your PageViewController:
 ```
-let pageVC = PageViewController(viewControllers: vcs, options: options)
+let pageVC = PageViewController(viewControllers: vcs)
 ```
 
 ## Example
 ```
-let options: SegmentedControlOptions = SegmentedControlOptions()
+let options = SegmentedControlOptions.default
 options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
 options.segmentButtonFontSize = 14  //YOUR FONT SIZE
 options.selectedTitleColor = .black // the button title color in selected / highlighed state
@@ -61,7 +62,7 @@ for color in colors {
     vcs.append(vc)
 }
 
-let pageVC = PageViewController(viewControllers: vcs, options: options)
+let pageVC = PageViewController(viewControllers: vcs)
 self.pushViewController(pageVC, animated: false)
 ```
 

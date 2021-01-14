@@ -13,8 +13,9 @@ class ViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let options: SegmentedControlOptions = SegmentedControlOptions()
+        let options = SegmentedControlOptions.default
         options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
+        options.segmentedViewBackgroundColor = .white
         options.segmentButtonFontSize = 14  //YOUR FONT SIZE
         options.selectedTitleColor = .black // the button title color in selected / highlighed state
         options.deSelectedTitleColor = .lightGray // the button title color in normal state
@@ -28,7 +29,7 @@ class ViewController: UINavigationController {
             vcs.append(vc)
         }
         
-        let pageVC = ExampleViewController(viewControllers: vcs, options: options)
+        let pageVC = ExampleViewController(viewControllers: vcs)
         self.pushViewController(pageVC, animated: false)
     }
 

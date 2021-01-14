@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KPageViewController"
-  s.version      = "1.1.0"
+  s.version      = "2.0.0"
   s.summary      = "A ViewPager Component For iOS"
 
   # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   You may simply inherit the PageViewController class and assign your viewControllers and titles, then the view pager comes up.
                    DESC
 
-  s.homepage     = "https://gitlab.com/chunkit.kam/pageviewcontroller"
+  s.homepage     = "https://github.com/KAM-CHUN-KIT/PageViewController"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -81,7 +81,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://gitlab.com/chunkit.kam/pageviewcontroller.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/KAM-CHUN-KIT/PageViewController.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
