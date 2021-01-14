@@ -18,7 +18,8 @@ options.indicatorColor = .red // the indicator color
 
 More configurable options:
 ```
-var segmentedTitles: [String] 
+var segmentedTitles: [String]
+var segmentedViewBackgroundColor: UIColor
 var selectedTitleColor: UIColor
 var deSelectedTitleColor: UIColor
 var indicatorColor: UIColor
@@ -41,7 +42,7 @@ for color in colors {
 
 Initialize your PageViewController:
 ```
-let pageVC = PageViewController(viewControllers: vcs, options: options)
+let pageVC = PageViewController(viewControllers: vcs)
 ```
 
 ## Example
