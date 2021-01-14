@@ -66,6 +66,22 @@ let pageVC = PageViewController(viewControllers: vcs)
 self.pushViewController(pageVC, animated: false)
 ```
 
+OR
+
+```
+
+class ExampleViewController: PageViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.viewControllers = vcs ///Your ViewControllers
+        self.reveal()
+        ...
+
+
+```
+
 ## Requirements
 iOS 9.0 or above <br/>
 Support Swift 5.0
