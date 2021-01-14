@@ -45,6 +45,7 @@ class SegmentedControlView: UIScrollView {
     private var isPageScrollingFlag = false
     
     ///Customizable configuration, from SegmentedControlOptions
+    private var segmentedViewBackgroundColor: UIColor
     private var selectedTitleColor: UIColor
     private var deSelectedTitleColor: UIColor
     private var indicatorColor: UIColor
@@ -65,6 +66,7 @@ class SegmentedControlView: UIScrollView {
     
     override init(frame: CGRect) {
         let option = SegmentedControlOptions.default
+        segmentedViewBackgroundColor = option.segmentedViewBackgroundColor
         selectedTitleColor = option.selectedTitleColor
         deSelectedTitleColor = option.deSelectedTitleColor
         indicatorColor = option.indicatorColor
@@ -74,6 +76,8 @@ class SegmentedControlView: UIScrollView {
         segmentedFontSize = option.segmentButtonFontSize
         selectionIndicator = UIView()
         super.init(frame: frame)
+        
+        self.backgroundColor = segmentedViewBackgroundColor
         
         initializeSegmentButtons()
         initializeIndicator()

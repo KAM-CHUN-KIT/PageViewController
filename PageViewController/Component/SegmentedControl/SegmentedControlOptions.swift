@@ -23,6 +23,7 @@ open class SegmentedControlOptions {
     }
     
     var segmentedTitles: [String] = ["Red", "Black"]
+    var segmentedViewBackgroundColor: UIColor = UIColor.white
     var selectedTitleColor: UIColor = UIColor.black
     var deSelectedTitleColor: UIColor = UIColor.lightGray
     var indicatorColor: UIColor = UIColor.red
