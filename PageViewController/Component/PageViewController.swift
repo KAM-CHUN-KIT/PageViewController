@@ -56,6 +56,11 @@ open class PageViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.navigationBar.isTranslucent = false
+    }
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
