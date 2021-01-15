@@ -13,6 +13,5 @@ class ExampleViewController: PageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "KPageViewController"
-        self.navigationController?.navigationBar.isTranslucent = false
     }
 }
