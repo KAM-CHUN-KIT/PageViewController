@@ -67,7 +67,6 @@ open class PageViewController: UIViewController {
         if !hasAppearedFlag, let _ = self.viewControllers { //will only setup UI with local data in willAppear
             self.reveal()
         }
-        hasAppearedFlag = true
     }
     
     open func reveal() {
