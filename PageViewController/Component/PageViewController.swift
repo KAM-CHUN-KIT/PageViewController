@@ -101,7 +101,7 @@ open class PageViewController: UIViewController {
         
         let startY = self.segmentedControlView?.frame.maxY ?? SegmentedControlOptions.FrameConstant.SEGMENT_Y + SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT
         
-        pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.maxY - startY)
+        pageViewController.view.frame = CGRect(x: 0, y: startY, width: view.frame.size.width, height: view.frame.height - startY)
         
         if let vcs = self.viewControllers, vcs.count > 0 {
             pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
