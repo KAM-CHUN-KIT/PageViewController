@@ -106,7 +106,9 @@ open class PageViewController: UIViewController {
         if let vcs = self.viewControllers, vcs.count > 0 {
             pageViewController.setViewControllers([vcs[initialIndex ?? 0]], direction: .forward, animated: true, completion: nil)
         }
+        addChild(pageViewController)
         self.view.addSubview(pageViewController.view)
+        pageViewController.didMove(toParent: self)
     }
 }
 
