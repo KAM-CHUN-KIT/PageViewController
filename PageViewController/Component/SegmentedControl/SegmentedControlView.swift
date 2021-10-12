@@ -272,7 +272,12 @@ extension SegmentedControlView: Scrolling {
                 || self.contentOffset.x > targetButton.frame.origin.x
             
             if outsideBound {
-                self.contentOffset = CGPoint(x: max(targetButton.frame.origin.x, 0), y: 0)
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.1, animations: {
+                        let pointX = targetButton.frame.maxX - self.frame.size.width
+                        self.contentOffset = CGPoint(x: max(pointX, 0), y: 0)
+                    })
+                }
             }
         }
     }
