@@ -16,7 +16,6 @@ open class SegmentedControlOptions {
         static let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
         static let BOUNCE_BUFFER = 10
         static let ANIMATION_SPEED: CGFloat = 0.2
-        static let SELECTOR_Y_BUFFER: CGFloat = 36
         static let SELECTOR_HEIGHT: CGFloat = 2.0
         static let SEGMENT_HEIGHT: CGFloat = 45
         static let SEGMENT_Y: CGFloat = 0.0
@@ -27,6 +26,7 @@ open class SegmentedControlOptions {
     public var selectedTitleColor: UIColor = UIColor.black
     public var deSelectedTitleColor: UIColor = UIColor.lightGray
     public var indicatorColor: UIColor = UIColor.red
+    public var indicatorY: CGFloat = 36
     public var hasRedDot: [Bool]?
     public var segmentButtonFontSize: CGFloat = 14
     public var navigateToTabIndex: Int = 0

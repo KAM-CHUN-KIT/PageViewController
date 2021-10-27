@@ -49,6 +49,7 @@ class SegmentedControlView: UIScrollView {
     private var selectedTitleColor: UIColor
     private var deSelectedTitleColor: UIColor
     private var indicatorColor: UIColor
+    private var indicatorY: CGFloat
     private var dynamicWidthTab: Bool // custom control to your segment button with fixed width or display the entire title
     private var navigateToTabIndex = 0 /* bring to specific tab by assigning index */
     private var segmentedTitles: [String]
@@ -70,6 +71,7 @@ class SegmentedControlView: UIScrollView {
         selectedTitleColor = option.selectedTitleColor
         deSelectedTitleColor = option.deSelectedTitleColor
         indicatorColor = option.indicatorColor
+        indicatorY = option.indicatorY
         dynamicWidthTab = option.isDynamicTabWidth
         navigateToTabIndex = option.navigateToTabIndex
         segmentedTitles = option.segmentedTitles
@@ -151,7 +153,7 @@ class SegmentedControlView: UIScrollView {
         
         self.currentPageIndex = navigateToTabIndex
         
-        self.selectionIndicator = UIView(frame: CGRect(x: x, y: SegmentedControlOptions.FrameConstant.SELECTOR_Y_BUFFER, width: width, height: SegmentedControlOptions.FrameConstant.SELECTOR_HEIGHT))
+        self.selectionIndicator = UIView(frame: CGRect(x: x, y: indicatorY, width: width, height: SegmentedControlOptions.FrameConstant.SELECTOR_HEIGHT))
         selectionIndicator.layer.cornerRadius = SegmentedControlOptions.FrameConstant.SELECTOR_HEIGHT/2
         selectionIndicator.backgroundColor = indicatorColor
         self.addSubview(selectionIndicator)
