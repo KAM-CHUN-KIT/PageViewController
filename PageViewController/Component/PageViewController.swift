@@ -69,18 +69,29 @@ open class PageViewController: UIViewController {
         }
     }
     
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if let segmentedControlView = segmentedControlView {
+            segmentedControlView.constraints.filter({ $0.firstAttribute == .width }).forEach({ segmentedControlView.removeConstraint($0) })
+            segmentedControlView.widthAnchor.constraint(equalToConstant: min(size.width, segmentedControlView.buttonsWidth)).isActive = true
+        }
+    }
+    
     open func reveal() {
         guard !hasAppearedFlag else { return }
         self.segmentedControlView = SegmentedControlView(frame: CGRect(x: 0, y: SegmentedControlOptions.FrameConstant.SEGMENT_Y, width: self.view.frame.size.width, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT))
         self.segmentedControlView?.pagerDelegate = self
-        self.segmentedControlView?.update(pageWidth: self.view.frame.size.width)
+        self.segmentedControlView?.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(self.segmentedControlView!)
         
-        setupPageViewController(SegmentedControlOptions.default.navigateToTabIndex)
+        NSLayoutConstraint.activate([
+            segmentedControlView!.widthAnchor.constraint(equalToConstant: min(self.view.frame.size.width, segmentedControlView!.buttonsWidth)),
+            segmentedControlView!.heightAnchor.constraint(equalToConstant: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT),
+            segmentedControlView!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            segmentedControlView!.topAnchor.constraint(equalTo: self.view.topAnchor, constant: SegmentedControlOptions.FrameConstant.SEGMENT_Y)
+        ])
         
-//        if navigateToTabIndex > 0 && self.buttons.count > navigateToTabIndex {
-//            self.segmentButtonClicked(self.buttons[navigateToTabIndex])
-//        }
+        setupPageViewController(SegmentedControlOptions.default.navigateToTabIndex)
         
         self.hasAppearedFlag = true
     }
@@ -178,7 +189,9 @@ extension PageViewController: UIScrollViewDelegate {
         }else {
             percentage = (scrollView.contentOffset.x - initialOffset.x)/self.view.frame.width
         }
-        segmentedControlView?.scroll(offset: scrollView.contentOffset, percent: percentage)
+        let ratio = (segmentedControlView?.bounds.width ?? 1.0) / scrollView.bounds.width
+        let offsetX = scrollView.contentOffset.x * ratio
+        segmentedControlView?.scroll(offset: CGPoint(x: offsetX, y: 0), percent: percentage)
     }
 }
 

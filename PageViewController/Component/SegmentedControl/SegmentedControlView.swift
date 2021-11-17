@@ -57,7 +57,11 @@ class SegmentedControlView: UIScrollView {
     
     
     ///from `Paging` protocol
-    private var pageWidth: CGFloat = 0.0
+    private var pageWidth: CGFloat {
+        get {
+            return self.frame.width
+        }
+    }
     private var currentPageIndex = 0
     private var nextPageIndex = 0
     
@@ -78,7 +82,6 @@ class SegmentedControlView: UIScrollView {
         segmentedFontSize = option.segmentButtonFontSize
         selectionIndicator = UIView()
         super.init(frame: frame)
-        
         self.backgroundColor = segmentedViewBackgroundColor
         
         initializeSegmentButtons()
@@ -97,13 +100,9 @@ class SegmentedControlView: UIScrollView {
             contentSizeWidth += title.getTextWidth(height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + SegmentedControlOptions.FrameConstant.BUTTON_WIDTH_BUFFER
         }
         
-        var remainAverageW:CGFloat = 0.0
         if contentSizeWidth > self.bounds.width {
             self.isSegmentScrollable = true
             self.contentSize = CGSize(width: contentSizeWidth, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT)
-        } else if dynamicWidthTab {
-            let remainWidth = self.bounds.width - contentSizeWidth
-            remainAverageW = remainWidth / CGFloat(segmentedTitles.count)
         }
         
         for i in 0..<segmentedTitles.count {
@@ -112,11 +111,7 @@ class SegmentedControlView: UIScrollView {
             if isSegmentScrollable || dynamicWidthTab {
                 buttonWidth = segmentedTitles[i].getTextWidth(height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT, font: UIFont.systemFont(ofSize: segmentedFontSize)) + SegmentedControlOptions.FrameConstant.BUTTON_WIDTH_BUFFER
             } else {
-                buttonWidth = (pageWidth / CGFloat(numOfPageCount))
-            }
-            
-            if dynamicWidthTab && !isSegmentScrollable {
-                buttonWidth += remainAverageW
+                buttonWidth = (pageWidth / CGFloat(segmentedTitles.count))
             }
             
             let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
@@ -209,8 +204,8 @@ extension SegmentedControlView: Paging {
         return self.nextPageIndex
     }
     
-    func update(pageWidth width: CGFloat) {
-        self.pageWidth = width
+    var buttonsWidth: CGFloat {
+        return buttons.compactMap({ $0.frame.width }).reduce(0, +)
     }
     
     func update(currentPage page: Int) {

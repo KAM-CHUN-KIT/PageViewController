@@ -12,8 +12,8 @@ protocol Paging {
     var numOfPageCount: Int { get }
     var currentPage: Int { get }
     var nextPage: Int { get }
+    var buttonsWidth: CGFloat { get }
     
-    func update(pageWidth width: CGFloat)
     func update(currentPage page: Int)
     func update(nextPage page: Int)
 }

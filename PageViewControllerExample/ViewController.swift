@@ -14,18 +14,19 @@ class ViewController: UINavigationController {
         super.viewDidLoad()
         
         let options = SegmentedControlOptions.default
-        options.segmentedTitles = ["Tab", "Tab With Long Title", "Tab", "Tab Tab", "Tab Showing in Half"] // YOUR [TITLEs]
-        options.segmentedViewBackgroundColor = .white
+        options.segmentedTitles = ["Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV"] // YOUR [TITLEs]
+//        options.isDynamicTabWidth = false
+        options.segmentedViewBackgroundColor = .yellow
         options.segmentButtonFontSize = 14  //YOUR FONT SIZE
-        options.selectedTitleColor = .black // the button title color in selected / highlighed state
+        options.selectedTitleColor = .red // the button title color in selected / highlighed state
         options.deSelectedTitleColor = .lightGray // the button title color in normal state
         options.indicatorColor = .red // the indicator color
         
         let colors = [UIColor.red, UIColor.blue, UIColor.green, UIColor.yellow, UIColor.purple]
         var vcs: [UIViewController] = []
-        for color in colors {
+        for i in 0..<options.segmentedTitles.count {
             let vc = UIViewController()
-            vc.view.backgroundColor = color
+            vc.view.backgroundColor = colors[i % colors.count]
             vcs.append(vc)
         }
         
