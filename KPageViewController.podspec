@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "KPageViewController"
-  s.version      = "2.2.0"
+  s.version      = "3.0.0"
   s.summary      = "A ViewPager Component For iOS"
 
   # This description is used to generate tags and improve search results.
@@ -72,7 +72,7 @@ Pod::Spec.new do |s|
   # s.osx.deployment_target = "10.7"
   # s.watchos.deployment_target = "2.0"
   # s.tvos.deployment_target = "9.0"
-  s.ios.deployment_target = "9.0"
+  s.ios.deployment_target = "12.0"
   s.swift_version = "5.0"
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
