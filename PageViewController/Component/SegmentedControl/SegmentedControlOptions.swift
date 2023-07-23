@@ -28,7 +28,7 @@ open class SegmentedControlOptions {
     public var indicatorColor: UIColor = UIColor.red
     public var indicatorY: CGFloat = 36
     public var hasRedDot: [Bool]?
-    public var segmentButtonFontSize: CGFloat = 14
+    public var segmentButtonFont: UIFont = UIFont.systemFont(ofSize: 14)
     public var navigateToTabIndex: Int = 0
     public var isDynamicTabWidth: Bool = true
 }
