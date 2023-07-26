@@ -13,12 +13,11 @@ open class SegmentedControlOptions {
     struct FrameConstant {
         static let Y_BUFFER = 14
         static let SELECTOR_WIDTH_BUFFER: CGFloat = 0.0
-        static let BUTTON_WIDTH_BUFFER: CGFloat = 24.0
-        static let BOUNCE_BUFFER = 10
-        static let ANIMATION_SPEED: CGFloat = 0.2
-        static let SELECTOR_HEIGHT: CGFloat = 2.0
+        static let BUTTON_MARGIN: CGFloat = 20.0
+        static let SELECTOR_HEIGHT: CGFloat = 1.0
         static let SEGMENT_HEIGHT: CGFloat = 45
         static let SEGMENT_Y: CGFloat = 0.0
+        static let TOP_MARGIN = 8.0
     }
     
     public var segmentedTitles: [String] = ["Red", "Black"]
@@ -26,7 +25,7 @@ open class SegmentedControlOptions {
     public var selectedTitleColor: UIColor = UIColor.black
     public var deSelectedTitleColor: UIColor = UIColor.lightGray
     public var indicatorColor: UIColor = UIColor.red
-    public var indicatorY: CGFloat = 36
+    public var indicatorMarginBelowButton: CGFloat = 0
     public var hasRedDot: [Bool]?
     public var segmentButtonFont: UIFont = UIFont.systemFont(ofSize: 14)
     public var navigateToTabIndex: Int = 0
