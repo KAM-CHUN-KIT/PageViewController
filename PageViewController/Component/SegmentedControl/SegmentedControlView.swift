@@ -50,7 +50,6 @@ class SegmentedControlView: UIScrollView {
     private let deSelectedTitleColor: UIColor
     private let indicatorColor: UIColor
     private let indicatorMarginBelowButton: CGFloat
-    private let dynamicWidthTab: Bool // custom control to your segment button with fixed width or display the entire title
     private var navigateToTabIndex = 0 /* bring to specific tab by assigning index */
     private let segmentedTitles: [String]
     private let segmentedFont: UIFont
@@ -76,7 +75,6 @@ class SegmentedControlView: UIScrollView {
         deSelectedTitleColor = option.deSelectedTitleColor
         indicatorColor = option.indicatorColor
         indicatorMarginBelowButton = option.indicatorMarginBelowButton
-        dynamicWidthTab = option.isDynamicTabWidth
         navigateToTabIndex = option.navigateToTabIndex
         segmentedTitles = option.segmentedTitles
         segmentedFont = option.segmentButtonFont
@@ -106,18 +104,10 @@ class SegmentedControlView: UIScrollView {
         }
         
         for i in 0..<segmentedTitles.count {
-            let buttonWidth: CGFloat
-            
-            if isSegmentScrollable || dynamicWidthTab {
-                buttonWidth = .zero // leave it to sizeToFit()
-            } else {
-                buttonWidth = (pageWidth / CGFloat(segmentedTitles.count))
-            }
-            
             let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
             let button = UIButton(frame: CGRect(x: previousButtonMaxX + SegmentedControlOptions.FrameConstant.BUTTON_MARGIN,
                                                 y: SegmentedControlOptions.FrameConstant.TOP_MARGIN,
-                                                width: buttonWidth,
+                                                width: .zero,
                                                 height: .zero))
             button.titleLabel?.font = segmentedFont
             button.tag = i

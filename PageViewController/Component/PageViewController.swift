@@ -73,7 +73,7 @@ open class PageViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         if let segmentedControlView = segmentedControlView {
             segmentedControlView.constraints.filter({ $0.firstAttribute == .width }).forEach({ segmentedControlView.removeConstraint($0) })
-            segmentedControlView.widthAnchor.constraint(equalToConstant: min(size.width, segmentedControlView.buttonsWidth)).isActive = true
+            segmentedControlView.widthAnchor.constraint(equalToConstant: size.width).isActive = true
         }
     }
     
@@ -85,7 +85,7 @@ open class PageViewController: UIViewController {
         self.view.addSubview(self.segmentedControlView!)
         
         NSLayoutConstraint.activate([
-            segmentedControlView!.widthAnchor.constraint(equalToConstant: min(self.view.frame.size.width, segmentedControlView!.buttonsWidth)),
+            segmentedControlView!.widthAnchor.constraint(equalToConstant: self.view.frame.size.width),
             segmentedControlView!.heightAnchor.constraint(equalToConstant: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT),
             segmentedControlView!.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             segmentedControlView!.topAnchor.constraint(equalTo: self.view.topAnchor, constant: SegmentedControlOptions.FrameConstant.SEGMENT_Y)

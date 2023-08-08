@@ -14,8 +14,7 @@ class ViewController: UINavigationController {
         super.viewDidLoad()
         
         let options = SegmentedControlOptions.default
-        options.segmentedTitles = ["Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV", "Home", "TV Shows", "Christmas", "Most Watched", "Live TV"] // YOUR [TITLEs]
-//        options.isDynamicTabWidth = false
+        options.segmentedTitles = ["Home", "TV Shows", "Home", "TV Shows", "Home", "TV Shows"] // YOUR [TITLEs]
         options.segmentedViewBackgroundColor = .yellow
         options.segmentButtonFont = UIFont.systemFont(ofSize: 14)  //YOUR FONT
         options.selectedTitleColor = .red // the button title color in selected / highlighed state

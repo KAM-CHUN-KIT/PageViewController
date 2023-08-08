@@ -29,5 +29,4 @@ open class SegmentedControlOptions {
     public var hasRedDot: [Bool]?
     public var segmentButtonFont: UIFont = UIFont.systemFont(ofSize: 14)
     public var navigateToTabIndex: Int = 0
-    public var isDynamicTabWidth: Bool = true
 }
