@@ -16,7 +16,7 @@ class ViewController: UINavigationController {
         let options = SegmentedControlOptions.default
         options.segmentedTitles = ["Home", "TV Shows", "Home", "TV Shows", "Home", "TV Shows"] // YOUR [TITLEs]
         options.segmentedViewBackgroundColor = .yellow
-        options.segmentButtonFont = UIFont.systemFont(ofSize: 14)  //YOUR FONT
+        options.segmentButtonFont = UIFont.preferredFont(forTextStyle: .subheadline) //YOUR FONT - support dynamic
         options.selectedTitleColor = .red // the button title color in selected / highlighed state
         options.deSelectedTitleColor = .lightGray // the button title color in normal state
         options.indicatorColor = .red // the indicator color

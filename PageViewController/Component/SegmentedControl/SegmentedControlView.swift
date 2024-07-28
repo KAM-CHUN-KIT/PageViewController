@@ -93,10 +93,11 @@ class SegmentedControlView: UIScrollView {
     }
     
     private func initializeSegmentButtons() {
+        let centerY = self.center.y
         for i in 0..<segmentedTitles.count {
             let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
             let button = UIButton(frame: CGRect(x: previousButtonMaxX + SegmentedControlOptions.FrameConstant.BUTTON_MARGIN,
-                                                y: SegmentedControlOptions.FrameConstant.TOP_MARGIN,
+                                                y: .zero,
                                                 width: .zero,
                                                 height: .zero))
             button.titleLabel?.font = segmentedFont
@@ -109,6 +110,7 @@ class SegmentedControlView: UIScrollView {
             button.setTitleColor(selectedTitleColor, for: .highlighted)
             button.setTitleColor(selectedTitleColor, for: .selected)
             button.sizeToFit()
+            button.center.y = centerY
             buttons.append(button)
             self.addSubview(button)
         }
