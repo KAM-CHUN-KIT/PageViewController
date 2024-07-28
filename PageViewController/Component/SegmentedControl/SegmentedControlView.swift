@@ -93,16 +93,6 @@ class SegmentedControlView: UIScrollView {
     }
     
     private func initializeSegmentButtons() {
-        var contentSizeWidth: CGFloat = 0.0
-        for title in segmentedTitles {
-            contentSizeWidth += title.getTextWidth(height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT, font: segmentedFont) + SegmentedControlOptions.FrameConstant.BUTTON_MARGIN
-        }
-        
-        if contentSizeWidth > self.bounds.width {
-            self.isSegmentScrollable = true
-            self.contentSize = CGSize(width: contentSizeWidth, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT)
-        }
-        
         for i in 0..<segmentedTitles.count {
             let previousButtonMaxX = (buttons.count > 0) ? buttons[max(i - 1, 0)].frame.maxX : 0
             let button = UIButton(frame: CGRect(x: previousButtonMaxX + SegmentedControlOptions.FrameConstant.BUTTON_MARGIN,
@@ -123,6 +113,11 @@ class SegmentedControlView: UIScrollView {
             self.addSubview(button)
         }
         buttons[navigateToTabIndex].isSelected = true
+        let contentSizeWidth = (buttons.last?.frame.maxX ?? 0) + SegmentedControlOptions.FrameConstant.BUTTON_MARGIN
+        if contentSizeWidth > self.bounds.width {
+            self.isSegmentScrollable = true
+            self.contentSize = CGSize(width: contentSizeWidth, height: SegmentedControlOptions.FrameConstant.SEGMENT_HEIGHT)
+        }
     }
     
     private func initializeIndicator() {
